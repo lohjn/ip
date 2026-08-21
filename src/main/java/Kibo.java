@@ -50,6 +50,38 @@ public class Kibo {
                 tasks[taskIndex].markAsNotDone();
                 System.out.println(" OK, I've marked this task as not done yet:");
                 System.out.println("   " + tasks[taskIndex]);
+            } else if (input.startsWith("todo ")) {
+                String description = input.substring(5);
+                Task task = new Todo(description);
+                tasks[taskCount] = task;
+                taskCount++;
+                System.out.println(" Got it. I've added this task:");
+                System.out.println("   " + task);
+                System.out.println(" Now you have " + taskCount + " tasks in the list.");
+            } else if (input.startsWith("deadline ")) {
+                String taskDetails = input.substring(9);
+                int byMarkerIndex = taskDetails.indexOf(" /by ");
+                String description = taskDetails.substring(0, byMarkerIndex);
+                String by = taskDetails.substring(byMarkerIndex + 5);
+                Task task = new Deadline(description, by);
+                tasks[taskCount] = task;
+                taskCount++;
+                System.out.println(" Got it. I've added this task:");
+                System.out.println("   " + task);
+                System.out.println(" Now you have " + taskCount + " tasks in the list.");
+            } else if (input.startsWith("event ")) {
+                String taskDetails = input.substring(6);
+                int fromMarkerIndex = taskDetails.indexOf(" /from ");
+                int toMarkerIndex = taskDetails.indexOf(" /to ", fromMarkerIndex);
+                String description = taskDetails.substring(0, fromMarkerIndex);
+                String from = taskDetails.substring(fromMarkerIndex + 7, toMarkerIndex);
+                String to = taskDetails.substring(toMarkerIndex + 5);
+                Task task = new Event(description, from, to);
+                tasks[taskCount] = task;
+                taskCount++;
+                System.out.println(" Got it. I've added this task:");
+                System.out.println("   " + task);
+                System.out.println(" Now you have " + taskCount + " tasks in the list.");
             } else {
                 tasks[taskCount] = new Task(input);
                 taskCount++;
