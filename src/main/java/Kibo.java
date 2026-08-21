@@ -4,6 +4,7 @@ import java.util.Scanner;
  * Runs the Kibo chatbot.
  */
 public class Kibo {
+    private static final int MAX_TASKS = 100;
     private static final String SEPARATOR = "____________________________________________________________";
 
     public static void main(String[] args) {
@@ -18,7 +19,10 @@ public class Kibo {
         System.out.println("What can I do for you?");
         System.out.println(SEPARATOR);
 
+        String[] tasks = new String[MAX_TASKS];
+        int taskCount = 0;
         Scanner scanner = new Scanner(System.in);
+
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
             System.out.println(SEPARATOR);
@@ -29,7 +33,16 @@ public class Kibo {
                 break;
             }
 
-            System.out.println(" " + input);
+            if (input.equals("list")) {
+                for (int i = 0; i < taskCount; i++) {
+                    System.out.println(" " + (i + 1) + ". " + tasks[i]);
+                }
+            } else {
+                tasks[taskCount] = input;
+                taskCount++;
+                System.out.println(" added: " + input);
+            }
+
             System.out.println(SEPARATOR);
         }
     }
