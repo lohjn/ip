@@ -10,7 +10,7 @@ public class Kibo {
                 + "|_|\\_\\|_|_.__/ \\___/\n";
 
         System.out.print(banner);
-        System.out.println("Hello! I'm Kibo.");
+        System.out.println("Hello! I'm Kibo. I am AI.");
         System.out.println("What can I do for you?");
         System.out.println("Bye. Hope to see you again soon!");
     }
