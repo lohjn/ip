@@ -28,6 +28,15 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
 
+## Required UI regression workflow
+
+After completing any code update, before reporting the work as complete:
+
+1. Review `test/ui-test-plan.md` against the code change. Update the plan when the change affects commands, console output, build or launch steps, setup, or other behavior covered by UI acceptance tests. Leave it unchanged when the change does not affect the plan, and state that decision.
+2. Invoke the project-specific `test-ui` skill and run the applicable cases in the plan.
+3. If a case fails, do not report the code update as complete. Resolve the implementation or expected-output mismatch, then rerun the applicable cases.
+4. Report which cases ran and their pass or fail status. Never claim that an unexecuted case passed.
+
 ## Git
 
 Use lightweight tags unless the user requests an annotated tag.

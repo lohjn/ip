@@ -1,11 +1,20 @@
 ---
 name: test-ui
-description: Run and verify command-line UI acceptance tests recorded in test/ui-test-plan.md. Use when asked to test the project's text UI, compare console output with expected output, or execute the UI test plan.
+description: Run and verify command-line UI acceptance tests recorded in test/ui-test-plan.md. Use after every code update in this repository, and when asked to test the project's text UI, compare console output with expected output, or execute the UI test plan.
 ---
 
 # Test the command-line UI
 
 Use `test/ui-test-plan.md` as the source of truth for the launch command, comparison rules, and ordered test cases. Accept new or revised lists of commands and expected outputs from the user by recording them in that file before testing.
+
+## After a code update
+
+Before running tests, compare the completed code change with `test/ui-test-plan.md`:
+
+- Update the plan if commands, expected console output, build or launch steps, setup, or covered behavior changed.
+- Leave the plan unchanged if it still describes the relevant behavior accurately, and report that decision.
+- Derive expected output only from explicit requirements and established project behavior. Do not change expected output merely to make a faulty implementation pass.
+- Run the applicable test cases after the final code edit. If a test-driven fix requires another code edit, run the applicable cases again.
 
 ## Maintain the test plan
 
