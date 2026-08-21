@@ -32,43 +32,54 @@ public class Kibo {
             System.out.println(SEPARATOR);
 
             try {
-                if (input.equals("bye")) {
+                CommandType commandType = CommandType.fromInput(input);
+                switch (commandType) {
+                case BYE -> {
                     System.out.println(" Bye. Hope to see you again soon!");
                     System.out.println(SEPARATOR);
-                    break;
+                    return;
                 }
-
-                if (input.equals("list")) {
+                case LIST -> {
                     System.out.println(" Here are the tasks in your list:");
                     for (int i = 0; i < tasks.size(); i++) {
                         System.out.println(" " + (i + 1) + "." + tasks.get(i));
                     }
-                } else if (matchesCommand(input, "mark")) {
-                    int taskIndex = parseTaskIndex(input, "mark", tasks.size());
+                }
+                case MARK -> {
+                    int taskIndex = parseTaskIndex(
+                            input, CommandType.MARK.getKeyword(), tasks.size());
                     tasks.get(taskIndex).markAsDone();
                     System.out.println(" Nice! I've marked this task as done:");
                     System.out.println("   " + tasks.get(taskIndex));
-                } else if (matchesCommand(input, "unmark")) {
-                    int taskIndex = parseTaskIndex(input, "unmark", tasks.size());
+                }
+                case UNMARK -> {
+                    int taskIndex = parseTaskIndex(
+                            input, CommandType.UNMARK.getKeyword(), tasks.size());
                     tasks.get(taskIndex).markAsNotDone();
                     System.out.println(" OK, I've marked this task as not done yet:");
                     System.out.println("   " + tasks.get(taskIndex));
-                } else if (matchesCommand(input, "delete")) {
-                    int taskIndex = parseTaskIndex(input, "delete", tasks.size());
+                }
+                case DELETE -> {
+                    int taskIndex = parseTaskIndex(
+                            input, CommandType.DELETE.getKeyword(), tasks.size());
                     Task removedTask = tasks.remove(taskIndex);
                     System.out.println(" Noted. I've removed this task:");
                     System.out.println("   " + removedTask);
                     System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
-                } else if (matchesCommand(input, "todo")) {
+                }
+                case TODO -> {
                     Task task = parseTodo(input);
                     addTask(tasks, task);
-                } else if (matchesCommand(input, "deadline")) {
+                }
+                case DEADLINE -> {
                     Task task = parseDeadline(input);
                     addTask(tasks, task);
-                } else if (matchesCommand(input, "event")) {
+                }
+                case EVENT -> {
                     Task task = parseEvent(input);
                     addTask(tasks, task);
-                } else {
+                }
+                case UNKNOWN ->
                     throw new InvalidCommandException("Sorry, that is not a valid command.\n"
                             + "Available commands: todo, deadline, event, list, mark, unmark, "
                             + "delete, bye");
@@ -80,17 +91,6 @@ public class Kibo {
 
             System.out.println(SEPARATOR);
         }
-    }
-
-    /**
-     * Returns whether the input is the given command, optionally followed by arguments.
-     *
-     * @param input full user input
-     * @param command command word to match
-     * @return true if the command word matches exactly
-     */
-    private static boolean matchesCommand(String input, String command) {
-        return input.equals(command) || input.startsWith(command + " ");
     }
 
     /**
@@ -128,7 +128,7 @@ public class Kibo {
      * @throws InvalidCommandException if the description is empty
      */
     private static Task parseTodo(String input) throws InvalidCommandException {
-        String description = input.substring("todo".length()).trim();
+        String description = input.substring(CommandType.TODO.getKeyword().length()).trim();
         if (description.isEmpty()) {
             throw new InvalidCommandException(
                     "The description of a todo cannot be empty.\n" + TODO_USAGE);
@@ -144,7 +144,7 @@ public class Kibo {
      * @throws InvalidCommandException if the description, marker, or deadline is missing
      */
     private static Task parseDeadline(String input) throws InvalidCommandException {
-        String taskDetails = input.substring("deadline".length()).trim();
+        String taskDetails = input.substring(CommandType.DEADLINE.getKeyword().length()).trim();
         int byMarkerIndex = taskDetails.indexOf(" /by");
         if (byMarkerIndex < 0) {
             throw new InvalidCommandException(
@@ -170,7 +170,7 @@ public class Kibo {
      * @throws InvalidCommandException if the description, markers, start, or end is missing
      */
     private static Task parseEvent(String input) throws InvalidCommandException {
-        String taskDetails = input.substring("event".length()).trim();
+        String taskDetails = input.substring(CommandType.EVENT.getKeyword().length()).trim();
         int fromMarkerIndex = taskDetails.indexOf(" /from");
         int toMarkerIndex = taskDetails.indexOf(" /to", fromMarkerIndex + 1);
         if (fromMarkerIndex < 0 || toMarkerIndex < 0 || toMarkerIndex < fromMarkerIndex) {
