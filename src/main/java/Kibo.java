@@ -20,6 +20,7 @@ public class Kibo {
         System.out.println(SEPARATOR);
 
         String[] tasks = new String[MAX_TASKS];
+        boolean[] isDone = new boolean[MAX_TASKS];
         int taskCount = 0;
         Scanner scanner = new Scanner(System.in);
 
@@ -34,9 +35,17 @@ public class Kibo {
             }
 
             if (input.equals("list")) {
+                System.out.println(" Here are the tasks in your list:");
                 for (int i = 0; i < taskCount; i++) {
-                    System.out.println(" " + (i + 1) + ". " + tasks[i]);
+                    String status = isDone[i] ? "X" : " ";
+                    System.out.println(" " + (i + 1) + ".[" + status + "] " + tasks[i]);
                 }
+            } else if (input.startsWith("mark ")) {
+                int taskNumber = Integer.parseInt(input.substring(5));
+                int taskIndex = taskNumber - 1;
+                isDone[taskIndex] = true;
+                System.out.println(" Nice! I've marked this task as done:");
+                System.out.println("   [X] " + tasks[taskIndex]);
             } else {
                 tasks[taskCount] = input;
                 taskCount++;
