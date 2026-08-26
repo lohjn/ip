@@ -406,3 +406,55 @@ ____________________________________________________________
  The saved task on line 1 has an invalid format.
 ____________________________________________________________
 ```
+
+## UI-008: Start and save without a data folder
+
+Aim: Verify that a first-time user can start Kibo without `data/duke.txt` or its parent
+`data/` folder, then create and save a task successfully.
+
+Setup: use a fresh empty temporary working directory with no `data/` folder. Launch Kibo with
+the compiled classes from the repository, for example:
+
+```text
+java -cp /absolute/path/to/ip/out Kibo
+```
+
+Input, in order:
+
+```text
+todo first task
+bye
+```
+
+Expected program output:
+
+```text
+ _  __ _ _           
+| |/ /(_) |__   ___  
+| ' / | | '_ \ / _ \
+| . \ | | |_) | (_) |
+|_|\_\|_|_.__/ \___/
+Hello! I'm Kibo. I am AI.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Got it. I've added this task:
+   [T][ ] first task
+ Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Expected file created after the program exits:
+
+```text
+data/duke.txt
+```
+
+Expected contents of that file:
+
+```text
+T | 0 | first task
+```
