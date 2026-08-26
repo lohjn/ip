@@ -1,12 +1,10 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Scanner;
 
 /**
  * Runs the Kibo chatbot.
  */
 public class Kibo {
-    private static final String SEPARATOR = "____________________________________________________________";
     private static final String TODO_USAGE = "Usage: todo [description]";
     private static final String DEADLINE_USAGE =
             "Usage: deadline [description] /by yyyy-MM-dd";
@@ -14,30 +12,21 @@ public class Kibo {
             "Usage: event [description] /from [start] /to [end]";
 
     public static void main(String[] args) {
-        String banner = " _  __ _ _           \n"
-                + "| |/ /(_) |__   ___  \n"
-                + "| ' / | | '_ \\ / _ \\\n"
-                + "| . \\ | | |_) | (_) |\n"
-                + "|_|\\_\\|_|_.__/ \\___/\n";
-
-        System.out.print(banner);
-        System.out.println("Hello! I'm Kibo. I am AI.");
-        System.out.println("What can I do for you?");
-        System.out.println(SEPARATOR);
+        Ui ui = new Ui();
+        ui.showWelcome();
 
         TaskList tasks;
         try {
             tasks = new TaskList(Storage.load());
         } catch (StorageException exception) {
-            System.out.println(" " + exception.getMessage());
-            System.out.println(SEPARATOR);
+            ui.showError(exception);
+            ui.showSeparator();
             return;
         }
-        Scanner scanner = new Scanner(System.in);
 
-        while (scanner.hasNextLine()) {
-            String input = scanner.nextLine().trim();
-            System.out.println(SEPARATOR);
+        while (ui.hasNextCommand()) {
+            String input = ui.readCommand();
+            ui.showSeparator();
 
             try {
                 if (input.isEmpty()) {
@@ -49,16 +38,12 @@ public class Kibo {
                 switch (commandType) {
                 case BYE -> {
                     ensureNoArguments(input, CommandType.BYE.getKeyword());
-                    System.out.println(" Bye. Hope to see you again soon!");
-                    System.out.println(SEPARATOR);
+                    ui.showGoodbye();
                     return;
                 }
                 case LIST -> {
                     ensureNoArguments(input, CommandType.LIST.getKeyword());
-                    System.out.println(" Here are the tasks in your list:");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println(" " + (i + 1) + "." + tasks.get(i));
-                    }
+                    ui.showTaskList(tasks);
                 }
                 case MARK -> {
                     int taskIndex = parseTaskIndex(
@@ -74,8 +59,7 @@ public class Kibo {
                         }
                         throw exception;
                     }
-                    System.out.println(" Nice! I've marked this task as done:");
-                    System.out.println("   " + task);
+                    ui.showTaskMarked(task);
                 }
                 case UNMARK -> {
                     int taskIndex = parseTaskIndex(
@@ -91,8 +75,7 @@ public class Kibo {
                         }
                         throw exception;
                     }
-                    System.out.println(" OK, I've marked this task as not done yet:");
-                    System.out.println("   " + task);
+                    ui.showTaskUnmarked(task);
                 }
                 case DELETE -> {
                     int taskIndex = parseTaskIndex(
@@ -104,21 +87,19 @@ public class Kibo {
                         tasks.add(taskIndex, removedTask);
                         throw exception;
                     }
-                    System.out.println(" Noted. I've removed this task:");
-                    System.out.println("   " + removedTask);
-                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+                    ui.showTaskDeleted(removedTask, tasks.size());
                 }
                 case TODO -> {
                     Task task = parseTodo(input);
-                    addTask(tasks, task);
+                    addTask(tasks, task, ui);
                 }
                 case DEADLINE -> {
                     Task task = parseDeadline(input);
-                    addTask(tasks, task);
+                    addTask(tasks, task, ui);
                 }
                 case EVENT -> {
                     Task task = parseEvent(input);
-                    addTask(tasks, task);
+                    addTask(tasks, task, ui);
                 }
                 case UNKNOWN ->
                     throw new InvalidCommandException("Sorry, that is not a valid command.\n"
@@ -126,11 +107,10 @@ public class Kibo {
                             + "delete, bye");
                 }
             } catch (KiboException exception) {
-                String indentedMessage = exception.getMessage().replace("\n", "\n ");
-                System.out.println(" " + indentedMessage);
+                ui.showError(exception);
             }
 
-            System.out.println(SEPARATOR);
+            ui.showSeparator();
         }
     }
 
@@ -258,7 +238,7 @@ public class Kibo {
      * @param tasks task storage
      * @param task task to add
      */
-    private static void addTask(TaskList tasks, Task task) throws StorageException {
+    private static void addTask(TaskList tasks, Task task, Ui ui) throws StorageException {
         tasks.add(task);
         try {
             Storage.save(tasks);
@@ -266,8 +246,6 @@ public class Kibo {
             tasks.remove(tasks.size() - 1);
             throw exception;
         }
-        System.out.println(" Got it. I've added this task:");
-        System.out.println("   " + task);
-        System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+        ui.showTaskAdded(task, tasks.size());
     }
 }
