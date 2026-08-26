@@ -44,7 +44,9 @@ public enum CommandType {
                 continue;
             }
             if (input.equals(commandType.keyword)
-                    || input.startsWith(commandType.keyword + " ")) {
+                    || (input.startsWith(commandType.keyword)
+                    && input.length() > commandType.keyword.length()
+                    && Character.isWhitespace(input.charAt(commandType.keyword.length())))) {
                 return commandType;
             }
         }
