@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -26,9 +25,9 @@ public class Kibo {
         System.out.println("What can I do for you?");
         System.out.println(SEPARATOR);
 
-        ArrayList<Task> tasks;
+        TaskList tasks;
         try {
-            tasks = Storage.load();
+            tasks = new TaskList(Storage.load());
         } catch (StorageException exception) {
             System.out.println(" " + exception.getMessage());
             System.out.println(SEPARATOR);
@@ -259,7 +258,7 @@ public class Kibo {
      * @param tasks task storage
      * @param task task to add
      */
-    private static void addTask(ArrayList<Task> tasks, Task task) throws StorageException {
+    private static void addTask(TaskList tasks, Task task) throws StorageException {
         tasks.add(task);
         try {
             Storage.save(tasks);

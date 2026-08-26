@@ -21,7 +21,7 @@ public class Storage {
      * @param tasks tasks to save
      * @throws StorageException if the file cannot be written
      */
-    public static void save(List<Task> tasks) throws StorageException {
+    public static void save(TaskList tasks) throws StorageException {
         StringBuilder contents = new StringBuilder();
         for (Task task : tasks) {
             contents.append(toStorageLine(task)).append(System.lineSeparator());
