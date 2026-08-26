@@ -1,3 +1,8 @@
+package kibo.ui;
+
+import kibo.exception.KiboException;
+import kibo.task.Task;
+import kibo.task.TaskList;
 import java.util.Scanner;
 
 /**
