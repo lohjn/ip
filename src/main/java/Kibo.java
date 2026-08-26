@@ -49,6 +49,7 @@ public class Kibo {
                     int taskIndex = parseTaskIndex(
                             input, CommandType.MARK.getKeyword(), tasks.size());
                     tasks.get(taskIndex).markAsDone();
+                    Storage.save(tasks);
                     System.out.println(" Nice! I've marked this task as done:");
                     System.out.println("   " + tasks.get(taskIndex));
                 }
@@ -56,6 +57,7 @@ public class Kibo {
                     int taskIndex = parseTaskIndex(
                             input, CommandType.UNMARK.getKeyword(), tasks.size());
                     tasks.get(taskIndex).markAsNotDone();
+                    Storage.save(tasks);
                     System.out.println(" OK, I've marked this task as not done yet:");
                     System.out.println("   " + tasks.get(taskIndex));
                 }
@@ -63,6 +65,7 @@ public class Kibo {
                     int taskIndex = parseTaskIndex(
                             input, CommandType.DELETE.getKeyword(), tasks.size());
                     Task removedTask = tasks.remove(taskIndex);
+                    Storage.save(tasks);
                     System.out.println(" Noted. I've removed this task:");
                     System.out.println("   " + removedTask);
                     System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
@@ -196,8 +199,9 @@ public class Kibo {
      * @param tasks task storage
      * @param task task to add
      */
-    private static void addTask(ArrayList<Task> tasks, Task task) {
+    private static void addTask(ArrayList<Task> tasks, Task task) throws StorageException {
         tasks.add(task);
+        Storage.save(tasks);
         System.out.println(" Got it. I've added this task:");
         System.out.println("   " + task);
         System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
