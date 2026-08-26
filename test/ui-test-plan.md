@@ -16,13 +16,14 @@
 
 ## UI-001: Add and display all task types
 
-Aim: Verify creation, display, marking, and unmarking of `Todo`, `Deadline`, and `Event` tasks while preserving date/time text exactly.
+Aim: Verify creation, display, marking, and unmarking of all task types, including formatted
+deadline dates.
 
 Input, in order:
 
 ```text
 todo borrow book
-deadline do homework /by no idea :-p
+deadline do homework /by 2019-12-02
 event project meeting /from Mon 2pm /to 4pm
 mark 1
 list
@@ -49,7 +50,7 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [D][ ] do homework (by: no idea :-p)
+   [D][ ] do homework (by: Dec 02 2019)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -64,7 +65,7 @@ ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][X] borrow book
- 2.[D][ ] do homework (by: no idea :-p)
+ 2.[D][ ] do homework (by: Dec 02 2019)
  3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
@@ -74,7 +75,7 @@ ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][ ] borrow book
- 2.[D][ ] do homework (by: no idea :-p)
+ 2.[D][ ] do homework (by: Dec 02 2019)
  3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
@@ -93,6 +94,7 @@ todo
 blah
 deadline by 5
 deadline return book /by
+deadline return book /by 2019-02-29
 event project meeting from 4 to 6
 event project meeting /from /to 6
 mark one
@@ -121,12 +123,16 @@ ____________________________________________________________
  Available commands: todo, deadline, event, list, mark, unmark, delete, bye
 ____________________________________________________________
 ____________________________________________________________
- A deadline needs a description and /by date or time.
- Usage: deadline [description] /by [date/time]
+ A deadline needs a description and /by date.
+ Usage: deadline [description] /by yyyy-MM-dd
 ____________________________________________________________
 ____________________________________________________________
- A deadline needs a description and /by date or time.
- Usage: deadline [description] /by [date/time]
+ A deadline needs a description and /by date.
+ Usage: deadline [description] /by yyyy-MM-dd
+____________________________________________________________
+____________________________________________________________
+ The deadline date must use yyyy-MM-dd format.
+ Usage: deadline [description] /by yyyy-MM-dd
 ____________________________________________________________
 ____________________________________________________________
  An event needs a description, /from start, and /to end.
@@ -159,7 +165,7 @@ Input, in order:
 
 ```text
 todo read book
-deadline return book /by June 6th
+deadline return book /by 2019-06-06
 event project meeting /from Aug 6th 2pm /to 4pm
 mark 1
 mark 2
@@ -189,7 +195,7 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [D][ ] return book (by: June 6th)
+   [D][ ] return book (by: Jun 06 2019)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -203,17 +209,17 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Nice! I've marked this task as done:
-   [D][X] return book (by: June 6th)
+   [D][X] return book (by: Jun 06 2019)
 ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][X] read book
- 2.[D][X] return book (by: June 6th)
+ 2.[D][X] return book (by: Jun 06 2019)
  3.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
  Noted. I've removed this task:
-   [D][X] return book (by: June 6th)
+   [D][X] return book (by: Jun 06 2019)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -241,7 +247,7 @@ Input, in order:
 
 ```text
 todo read book
-deadline return book /by Sunday
+deadline return book /by 2019-12-01
 mark 1
 delete 2
 bye
@@ -265,7 +271,7 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [D][ ] return book (by: Sunday)
+   [D][ ] return book (by: Dec 01 2019)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -274,7 +280,7 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Noted. I've removed this task:
-   [D][ ] return book (by: Sunday)
+   [D][ ] return book (by: Dec 01 2019)
  Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -297,7 +303,7 @@ Setup fixture for `data/duke.txt`:
 
 ```text
 T | 1 | read book
-D | 0 | return book | Sunday
+D | 0 | return book | 2019-12-01
 E | 0 | project meeting | Mon 2pm | 4pm
 ```
 
@@ -322,7 +328,7 @@ ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][X] read book
- 2.[D][ ] return book (by: Sunday)
+ 2.[D][ ] return book (by: Dec 01 2019)
  3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________

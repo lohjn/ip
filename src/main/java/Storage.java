@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
@@ -71,7 +73,7 @@ public class Storage {
         String doneStatus = task.isDone() ? "1" : "0";
         if (task instanceof Deadline deadline) {
             validateStorageText(deadline.getDescription());
-            validateStorageText(deadline.getBy());
+            validateStorageText(deadline.getBy().toString());
             return "D | " + doneStatus + " | " + deadline.getDescription()
                     + " | " + deadline.getBy();
         }
@@ -143,7 +145,11 @@ public class Storage {
             if (parts[3].isBlank()) {
                 throw invalidStorageLine(lineNumber);
             }
-            task = new Deadline(parts[2], parts[3]);
+            try {
+                task = new Deadline(parts[2], LocalDate.parse(parts[3]));
+            } catch (DateTimeParseException exception) {
+                throw invalidStorageLine(lineNumber);
+            }
             break;
         case "E":
             if (parts.length != 5) {

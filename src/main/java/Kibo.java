@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,7 +10,7 @@ public class Kibo {
     private static final String SEPARATOR = "____________________________________________________________";
     private static final String TODO_USAGE = "Usage: todo [description]";
     private static final String DEADLINE_USAGE =
-            "Usage: deadline [description] /by [date/time]";
+            "Usage: deadline [description] /by yyyy-MM-dd";
     private static final String EVENT_USAGE =
             "Usage: event [description] /from [start] /to [end]";
 
@@ -196,25 +198,31 @@ public class Kibo {
      *
      * @param input full deadline command
      * @return parsed deadline task
-     * @throws InvalidCommandException if the description, marker, or deadline is missing
+     * @throws InvalidCommandException if the description, marker, or date is missing or invalid
      */
     private static Task parseDeadline(String input) throws InvalidCommandException {
         String taskDetails = input.substring(CommandType.DEADLINE.getKeyword().length()).trim();
         int byMarkerIndex = taskDetails.indexOf(" /by");
         if (byMarkerIndex < 0) {
             throw new InvalidCommandException(
-                    "A deadline needs a description and /by date or time.\n"
+                    "A deadline needs a description and /by date.\n"
                     + DEADLINE_USAGE);
         }
 
         String description = taskDetails.substring(0, byMarkerIndex).trim();
-        String by = taskDetails.substring(byMarkerIndex + 4).trim();
-        if (description.isEmpty() || by.isEmpty()) {
+        String dateText = taskDetails.substring(byMarkerIndex + 4).trim();
+        if (description.isEmpty() || dateText.isEmpty()) {
             throw new InvalidCommandException(
-                    "A deadline needs a description and /by date or time.\n"
+                    "A deadline needs a description and /by date.\n"
                     + DEADLINE_USAGE);
         }
-        return new Deadline(description, by);
+
+        try {
+            return new Deadline(description, LocalDate.parse(dateText));
+        } catch (DateTimeParseException exception) {
+            throw new InvalidCommandException("The deadline date must use yyyy-MM-dd format.\n"
+                    + DEADLINE_USAGE);
+        }
     }
 
     /**
