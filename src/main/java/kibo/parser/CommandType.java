@@ -1,3 +1,5 @@
+package kibo.parser;
+
 /**
  * Identifies the commands understood by the Kibo chatbot.
  */

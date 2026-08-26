@@ -3,8 +3,8 @@
 ## Test environment
 
 - Working directory: repository root
-- Build command: `javac -d out src/main/java/*.java`
-- Launch command: `java -cp out Kibo`
+- Build command: `find src/main/java -name '*.java' -print0 | xargs -0 javac -d out`
+- Launch command: `java -cp out kibo.Kibo`
 - Timeout: 5 seconds
 - Setup/reset: start a fresh process for each test case. Before the test session, back up any
   existing `data/duke.txt` file and restore it when testing finishes. Before UI-001 through
@@ -422,7 +422,7 @@ Setup: use a fresh empty temporary working directory with no `data/` folder. Lau
 the compiled classes from the repository, for example:
 
 ```text
-java -cp /absolute/path/to/ip/out Kibo
+java -cp /absolute/path/to/ip/out kibo.Kibo
 ```
 
 Input, in order:

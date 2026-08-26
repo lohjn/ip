@@ -1,3 +1,5 @@
+package kibo.exception;
+
 /**
  * Represents a command that is unknown or does not follow the required syntax.
  */

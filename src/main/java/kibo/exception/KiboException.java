@@ -1,3 +1,5 @@
+package kibo.exception;
+
 /**
  * Represents an error specific to the Kibo chatbot.
  */

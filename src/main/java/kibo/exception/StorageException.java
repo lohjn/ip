@@ -1,3 +1,5 @@
+package kibo.exception;
+
 /**
  * Represents a problem saving or loading Kibo's task list on the hard disk.
  */
