@@ -24,7 +24,14 @@ public class Kibo {
         System.out.println("What can I do for you?");
         System.out.println(SEPARATOR);
 
-        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Task> tasks;
+        try {
+            tasks = Storage.load();
+        } catch (StorageException exception) {
+            System.out.println(" " + exception.getMessage());
+            System.out.println(SEPARATOR);
+            return;
+        }
         Scanner scanner = new Scanner(System.in);
 
         while (scanner.hasNextLine()) {
@@ -32,14 +39,21 @@ public class Kibo {
             System.out.println(SEPARATOR);
 
             try {
+                if (input.isEmpty()) {
+                    throw new InvalidCommandException("Please enter a command.\n"
+                            + "Available commands: todo, deadline, event, list, mark, unmark, "
+                            + "delete, bye");
+                }
                 CommandType commandType = CommandType.fromInput(input);
                 switch (commandType) {
                 case BYE -> {
+                    ensureNoArguments(input, CommandType.BYE.getKeyword());
                     System.out.println(" Bye. Hope to see you again soon!");
                     System.out.println(SEPARATOR);
                     return;
                 }
                 case LIST -> {
+                    ensureNoArguments(input, CommandType.LIST.getKeyword());
                     System.out.println(" Here are the tasks in your list:");
                     for (int i = 0; i < tasks.size(); i++) {
                         System.out.println(" " + (i + 1) + "." + tasks.get(i));
@@ -48,24 +62,47 @@ public class Kibo {
                 case MARK -> {
                     int taskIndex = parseTaskIndex(
                             input, CommandType.MARK.getKeyword(), tasks.size());
-                    tasks.get(taskIndex).markAsDone();
-                    Storage.save(tasks);
+                    Task task = tasks.get(taskIndex);
+                    boolean wasDone = task.isDone();
+                    task.markAsDone();
+                    try {
+                        Storage.save(tasks);
+                    } catch (StorageException exception) {
+                        if (!wasDone) {
+                            task.markAsNotDone();
+                        }
+                        throw exception;
+                    }
                     System.out.println(" Nice! I've marked this task as done:");
-                    System.out.println("   " + tasks.get(taskIndex));
+                    System.out.println("   " + task);
                 }
                 case UNMARK -> {
                     int taskIndex = parseTaskIndex(
                             input, CommandType.UNMARK.getKeyword(), tasks.size());
-                    tasks.get(taskIndex).markAsNotDone();
-                    Storage.save(tasks);
+                    Task task = tasks.get(taskIndex);
+                    boolean wasDone = task.isDone();
+                    task.markAsNotDone();
+                    try {
+                        Storage.save(tasks);
+                    } catch (StorageException exception) {
+                        if (wasDone) {
+                            task.markAsDone();
+                        }
+                        throw exception;
+                    }
                     System.out.println(" OK, I've marked this task as not done yet:");
-                    System.out.println("   " + tasks.get(taskIndex));
+                    System.out.println("   " + task);
                 }
                 case DELETE -> {
                     int taskIndex = parseTaskIndex(
                             input, CommandType.DELETE.getKeyword(), tasks.size());
                     Task removedTask = tasks.remove(taskIndex);
-                    Storage.save(tasks);
+                    try {
+                        Storage.save(tasks);
+                    } catch (StorageException exception) {
+                        tasks.add(taskIndex, removedTask);
+                        throw exception;
+                    }
                     System.out.println(" Noted. I've removed this task:");
                     System.out.println("   " + removedTask);
                     System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
@@ -121,6 +158,21 @@ public class Kibo {
             throw new KiboException("Task " + taskNumber + " does not exist in your list.");
         }
         return taskNumber - 1;
+    }
+
+    /**
+     * Rejects additional words supplied to a command that has no arguments.
+     *
+     * @param input full user input
+     * @param command command keyword
+     * @throws InvalidCommandException if the user supplied extra text
+     */
+    private static void ensureNoArguments(String input, String command)
+            throws InvalidCommandException {
+        if (!input.equals(command)) {
+            throw new InvalidCommandException("This command does not take any additional text.\n"
+                    + "Usage: " + command);
+        }
     }
 
     /**
@@ -201,7 +253,12 @@ public class Kibo {
      */
     private static void addTask(ArrayList<Task> tasks, Task task) throws StorageException {
         tasks.add(task);
-        Storage.save(tasks);
+        try {
+            Storage.save(tasks);
+        } catch (StorageException exception) {
+            tasks.remove(tasks.size() - 1);
+            throw exception;
+        }
         System.out.println(" Got it. I've added this task:");
         System.out.println("   " + task);
         System.out.println(" Now you have " + tasks.size() + " tasks in the list.");

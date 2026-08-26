@@ -1,5 +1,5 @@
 /**
- * Represents a problem saving Kibo's task list to the hard disk.
+ * Represents a problem saving or loading Kibo's task list on the hard disk.
  */
 public class StorageException extends KiboException {
     private static final long serialVersionUID = 1L;
