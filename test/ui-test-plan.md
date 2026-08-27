@@ -464,3 +464,36 @@ Expected contents of that file:
 ```text
 T | 0 | first task
 ```
+
+## UI-009: Launch the packaged fat JAR
+
+Aim: Verify that the Shadow plugin produces an executable fat JAR with Kibo as its main class.
+
+Setup: run `./gradlew shadowJar` from the repository root. Then use a fresh empty temporary
+working directory with no `data/` folder and launch the JAR using its absolute path, for example:
+
+```text
+java -jar /absolute/path/to/ip/build/libs/kibo.jar
+```
+
+Input, in order:
+
+```text
+bye
+```
+
+Expected program output:
+
+```text
+ _  __ _ _           
+| |/ /(_) |__   ___  
+| ' / | | '_ \ / _ \
+| . \ | | |_) | (_) |
+|_|\_\|_|_.__/ \___/
+Hello! I'm Kibo. I am AI.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
