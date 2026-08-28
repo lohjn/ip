@@ -45,6 +45,10 @@ After completing any code update, before reporting the work as complete:
 
 ## Git
 
+Before proposing, reviewing, or creating any commit message or branch name, invoke the
+project-specific `seedu-git-standard` skill and follow it. Every commit created for this project
+must comply with that skill, including its subject and any required body.
+
 Use lightweight tags unless the user requests an annotated tag.
 When proposing or creating a commit message, include enough detail to explain the rationale for the change.
 Do not commit or push unless explicitly asked.
