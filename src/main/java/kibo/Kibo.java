@@ -45,69 +45,73 @@ public class Kibo {
             try {
                 CommandType commandType = parser.parseCommandType(input);
                 switch (commandType) {
-                case BYE -> {
-                    parser.ensureNoArguments(input, commandType);
-                    ui.showGoodbye();
-                    return;
-                }
-                case LIST -> {
-                    parser.ensureNoArguments(input, commandType);
-                    ui.showTaskList(tasks);
-                }
-                case MARK -> {
-                    int taskIndex = parser.parseTaskIndex(input, commandType, tasks.size());
-                    Task task = tasks.get(taskIndex);
-                    boolean wasDone = task.isDone();
-                    task.markAsDone();
-                    try {
-                        Storage.save(tasks);
-                    } catch (StorageException exception) {
-                        if (!wasDone) {
-                            task.markAsNotDone();
+                    case BYE -> {
+                        parser.ensureNoArguments(input, commandType);
+                        ui.showGoodbye();
+                        return;
+                    }
+                    case LIST -> {
+                        parser.ensureNoArguments(input, commandType);
+                        ui.showTaskList(tasks);
+                    }
+                    case FIND -> {
+                        String keyword = parser.parseFindKeyword(input);
+                        ui.showMatchingTasks(tasks.find(keyword));
+                    }
+                    case MARK -> {
+                        int taskIndex = parser.parseTaskIndex(input, commandType, tasks.size());
+                        Task task = tasks.get(taskIndex);
+                        boolean wasDone = task.isDone();
+                        task.markAsDone();
+                        try {
+                            Storage.save(tasks);
+                        } catch (StorageException exception) {
+                            if (!wasDone) {
+                                task.markAsNotDone();
+                            }
+                            throw exception;
                         }
-                        throw exception;
+                        ui.showTaskMarked(task);
                     }
-                    ui.showTaskMarked(task);
-                }
-                case UNMARK -> {
-                    int taskIndex = parser.parseTaskIndex(input, commandType, tasks.size());
-                    Task task = tasks.get(taskIndex);
-                    boolean wasDone = task.isDone();
-                    task.markAsNotDone();
-                    try {
-                        Storage.save(tasks);
-                    } catch (StorageException exception) {
-                        if (wasDone) {
-                            task.markAsDone();
+                    case UNMARK -> {
+                        int taskIndex = parser.parseTaskIndex(input, commandType, tasks.size());
+                        Task task = tasks.get(taskIndex);
+                        boolean wasDone = task.isDone();
+                        task.markAsNotDone();
+                        try {
+                            Storage.save(tasks);
+                        } catch (StorageException exception) {
+                            if (wasDone) {
+                                task.markAsDone();
+                            }
+                            throw exception;
                         }
-                        throw exception;
+                        ui.showTaskUnmarked(task);
                     }
-                    ui.showTaskUnmarked(task);
-                }
-                case DELETE -> {
-                    int taskIndex = parser.parseTaskIndex(input, commandType, tasks.size());
-                    Task removedTask = tasks.remove(taskIndex);
-                    try {
-                        Storage.save(tasks);
-                    } catch (StorageException exception) {
-                        tasks.add(taskIndex, removedTask);
-                        throw exception;
+                    case DELETE -> {
+                        int taskIndex = parser.parseTaskIndex(input, commandType, tasks.size());
+                        Task removedTask = tasks.remove(taskIndex);
+                        try {
+                            Storage.save(tasks);
+                        } catch (StorageException exception) {
+                            tasks.add(taskIndex, removedTask);
+                            throw exception;
+                        }
+                        ui.showTaskDeleted(removedTask, tasks.size());
                     }
-                    ui.showTaskDeleted(removedTask, tasks.size());
-                }
-                case TODO -> {
-                    Task task = parser.parseTodo(input);
-                    addTask(tasks, task, ui);
-                }
-                case DEADLINE -> {
-                    Task task = parser.parseDeadline(input);
-                    addTask(tasks, task, ui);
-                }
-                case EVENT -> {
-                    Task task = parser.parseEvent(input);
-                    addTask(tasks, task, ui);
-                }
-                case UNKNOWN -> throw new IllegalStateException("Unexpected command type");
+                    case TODO -> {
+                        Task task = parser.parseTodo(input);
+                        addTask(tasks, task, ui);
+                    }
+                    case DEADLINE -> {
+                        Task task = parser.parseDeadline(input);
+                        addTask(tasks, task, ui);
+                    }
+                    case EVENT -> {
+                        Task task = parser.parseEvent(input);
+                        addTask(tasks, task, ui);
+                    }
+                    case UNKNOWN -> throw new IllegalStateException("Unexpected command type");
                 }
             } catch (KiboException exception) {
                 ui.showError(exception);

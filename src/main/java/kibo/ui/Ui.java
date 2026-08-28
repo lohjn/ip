@@ -74,6 +74,18 @@ public class Ui {
     }
 
     /**
+     * Displays tasks that match a search keyword.
+     *
+     * @param matchingTasks matching tasks to display.
+     */
+    public void showMatchingTasks(TaskList matchingTasks) {
+        System.out.println(" Here are the matching tasks in your list:");
+        for (int index = 0; index < matchingTasks.size(); index++) {
+            System.out.println(" " + (index + 1) + "." + matchingTasks.get(index));
+        }
+    }
+
+    /**
      * Displays confirmation that a task was added.
      *
      * @param task added task.

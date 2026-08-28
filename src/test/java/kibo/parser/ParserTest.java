@@ -65,6 +65,20 @@ public class ParserTest {
         assertInvalidEvent("event project meeting /from Mon 2pm /to");
     }
 
+    @Test
+    void parseFindKeyword_validKeyword_returnsKeyword() throws InvalidCommandException {
+        assertEquals("book", parser.parseFindKeyword("find book"));
+    }
+
+    @Test
+    void parseFindKeyword_emptyKeyword_throwsInvalidCommandException() {
+        InvalidCommandException exception = assertThrows(InvalidCommandException.class,
+                () -> parser.parseFindKeyword("find"));
+
+        assertEquals("The search keyword cannot be empty.\nUsage: find [keyword]",
+                exception.getMessage());
+    }
+
     /**
      * Verifies each malformed deadline command produces the standard usage error.
      *

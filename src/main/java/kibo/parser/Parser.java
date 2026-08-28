@@ -19,6 +19,9 @@ public class Parser {
             "Usage: deadline [description] /by yyyy-MM-dd";
     private static final String EVENT_USAGE =
             "Usage: event [description] /from [start] /to [end]";
+    private static final String FIND_USAGE = "Usage: find [keyword]";
+    private static final String AVAILABLE_COMMANDS =
+            "Available commands: todo, deadline, event, list, find, mark, unmark, delete, bye";
 
     /**
      * Creates a parser for interpreting Kibo commands.
@@ -35,16 +38,13 @@ public class Parser {
      */
     public CommandType parseCommandType(String input) throws InvalidCommandException {
         if (input.isEmpty()) {
-            throw new InvalidCommandException("Please enter a command.\n"
-                    + "Available commands: todo, deadline, event, list, mark, unmark, "
-                    + "delete, bye");
+            throw new InvalidCommandException("Please enter a command.\n" + AVAILABLE_COMMANDS);
         }
 
         CommandType commandType = CommandType.fromInput(input);
         if (commandType == CommandType.UNKNOWN) {
-            throw new InvalidCommandException("Sorry, that is not a valid command.\n"
-                    + "Available commands: todo, deadline, event, list, mark, unmark, "
-                    + "delete, bye");
+            throw new InvalidCommandException(
+                    "Sorry, that is not a valid command.\n" + AVAILABLE_COMMANDS);
         }
         return commandType;
     }
@@ -89,6 +89,22 @@ public class Parser {
             throw new KiboException("Task " + taskNumber + " does not exist in your list.");
         }
         return taskNumber - 1;
+    }
+
+    /**
+     * Extracts and validates the keyword used to find tasks.
+     *
+     * @param input full find command.
+     * @return non-empty search keyword.
+     * @throws InvalidCommandException if the keyword is empty.
+     */
+    public String parseFindKeyword(String input) throws InvalidCommandException {
+        String keyword = input.substring(CommandType.FIND.getKeyword().length()).trim();
+        if (keyword.isEmpty()) {
+            throw new InvalidCommandException(
+                    "The search keyword cannot be empty.\n" + FIND_USAGE);
+        }
+        return keyword;
     }
 
     /**

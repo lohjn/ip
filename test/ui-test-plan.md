@@ -9,8 +9,8 @@
 - Setup/reset: start a fresh process for each test case. Before the test session, back up any
   existing `data/duke.txt` file and restore it when testing finishes. Before UI-001 through
   UI-004 and UI-006, replace `data/duke.txt` with an empty file so the program starts with no
-  tasks. Before UI-005 and UI-007, replace it with the fixture shown in that case. The program
-  writes test data to `data/duke.txt` while each case runs.
+  tasks. Before UI-005, UI-007, and UI-010, replace it with the fixture shown in that case. The
+  program writes test data to `data/duke.txt` while each case runs.
 - Output comparison: exact equality after converting CRLF to LF and ignoring one final newline
 - Expected exit behavior: exit normally after receiving `bye`
 
@@ -120,7 +120,7 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Sorry, that is not a valid command.
- Available commands: todo, deadline, event, list, mark, unmark, delete, bye
+ Available commands: todo, deadline, event, list, find, mark, unmark, delete, bye
 ____________________________________________________________
 ____________________________________________________________
  A deadline needs a description and /by date.
@@ -365,7 +365,7 @@ What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
  Please enter a command.
- Available commands: todo, deadline, event, list, mark, unmark, delete, bye
+ Available commands: todo, deadline, event, list, find, mark, unmark, delete, bye
 ____________________________________________________________
 ____________________________________________________________
  This command does not take any additional text.
@@ -492,6 +492,61 @@ Expected program output:
 |_|\_\|_|_.__/ \___/
 Hello! I'm Kibo. I am AI.
 What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## UI-010: Find tasks by description
+
+Aim: Verify that `find` returns matching descriptions in their original order, ignores letter
+case, does not search task metadata, and rejects an empty keyword.
+
+Setup fixture for `data/duke.txt`:
+
+```text
+T | 1 | read book
+D | 1 | return book | 2019-06-06
+E | 0 | project meeting | 2pm | 4pm
+```
+
+Input, in order:
+
+```text
+find BOOK
+find meeting
+find 2019
+find
+bye
+```
+
+Expected program output:
+
+```text
+ _  __ _ _           
+| |/ /(_) |__   ___  
+| ' / | | '_ \ / _ \
+| . \ | | |_) | (_) |
+|_|\_\|_|_.__/ \___/
+Hello! I'm Kibo. I am AI.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Here are the matching tasks in your list:
+ 1.[T][X] read book
+ 2.[D][X] return book (by: Jun 06 2019)
+____________________________________________________________
+____________________________________________________________
+ Here are the matching tasks in your list:
+ 1.[E][ ] project meeting (from: 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+ Here are the matching tasks in your list:
+____________________________________________________________
+____________________________________________________________
+ The search keyword cannot be empty.
+ Usage: find [keyword]
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!
