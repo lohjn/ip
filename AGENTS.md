@@ -28,6 +28,12 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
 
+## Required Java coding standard
+
+For every Java code creation, modification, or review, invoke the project-specific
+`seedu-java-coding-standard` skill and follow it for all Java code in scope. Do not report a Java
+change as complete until the changed code has been checked against that skill.
+
 ## Required UI regression workflow
 
 After completing any code update, before reporting the work as complete:
