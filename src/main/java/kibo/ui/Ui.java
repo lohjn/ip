@@ -1,9 +1,10 @@
 package kibo.ui;
 
+import java.util.Scanner;
+
 import kibo.exception.KiboException;
 import kibo.task.Task;
 import kibo.task.TaskList;
-import java.util.Scanner;
 
 /**
  * Handles all console input and output for Kibo.
@@ -38,7 +39,7 @@ public class Ui {
     /**
      * Returns whether another command is available from the user.
      *
-     * @return {@code true} if a command can be read
+     * @return {@code true} if a command can be read.
      */
     public boolean hasNextCommand() {
         return scanner.hasNextLine();
@@ -47,7 +48,7 @@ public class Ui {
     /**
      * Reads and trims the next command entered by the user.
      *
-     * @return command text
+     * @return command text.
      */
     public String readCommand() {
         return scanner.nextLine().trim();
@@ -63,7 +64,7 @@ public class Ui {
     /**
      * Displays the task list.
      *
-     * @param tasks tasks to display
+     * @param tasks tasks to display.
      */
     public void showTaskList(TaskList tasks) {
         System.out.println(" Here are the tasks in your list:");
@@ -75,8 +76,8 @@ public class Ui {
     /**
      * Displays confirmation that a task was added.
      *
-     * @param task added task
-     * @param taskCount number of tasks after adding
+     * @param task added task.
+     * @param taskCount number of tasks after adding.
      */
     public void showTaskAdded(Task task, int taskCount) {
         System.out.println(" Got it. I've added this task:");
@@ -87,7 +88,7 @@ public class Ui {
     /**
      * Displays confirmation that a task was marked done.
      *
-     * @param task marked task
+     * @param task marked task.
      */
     public void showTaskMarked(Task task) {
         System.out.println(" Nice! I've marked this task as done:");
@@ -97,7 +98,7 @@ public class Ui {
     /**
      * Displays confirmation that a task was marked not done.
      *
-     * @param task unmarked task
+     * @param task unmarked task.
      */
     public void showTaskUnmarked(Task task) {
         System.out.println(" OK, I've marked this task as not done yet:");
@@ -107,8 +108,8 @@ public class Ui {
     /**
      * Displays confirmation that a task was removed.
      *
-     * @param task removed task
-     * @param taskCount number of tasks after removal
+     * @param task removed task.
+     * @param taskCount number of tasks after removal.
      */
     public void showTaskDeleted(Task task, int taskCount) {
         System.out.println(" Noted. I've removed this task:");
@@ -119,7 +120,7 @@ public class Ui {
     /**
      * Displays a user-facing chatbot error.
      *
-     * @param exception error to display
+     * @param exception error to display.
      */
     public void showError(KiboException exception) {
         String indentedMessage = exception.getMessage().replace("\n", "\n ");

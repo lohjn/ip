@@ -21,7 +21,7 @@ public class TaskList implements Iterable<Task> {
     /**
      * Creates a task list containing the supplied tasks.
      *
-     * @param tasks tasks to place in the new list
+     * @param tasks tasks to place in the new list.
      */
     public TaskList(List<Task> tasks) {
         this.tasks = new ArrayList<>(tasks);
@@ -30,7 +30,7 @@ public class TaskList implements Iterable<Task> {
     /**
      * Adds a task to the end of the list.
      *
-     * @param task task to add
+     * @param task task to add.
      */
     public void add(Task task) {
         tasks.add(task);
@@ -39,8 +39,8 @@ public class TaskList implements Iterable<Task> {
     /**
      * Inserts a task at the specified zero-based position.
      *
-     * @param index zero-based insertion position
-     * @param task task to insert
+     * @param index zero-based insertion position.
+     * @param task task to insert.
      */
     public void add(int index, Task task) {
         tasks.add(index, task);
@@ -49,8 +49,8 @@ public class TaskList implements Iterable<Task> {
     /**
      * Returns the task at the specified zero-based position.
      *
-     * @param index zero-based task position
-     * @return task at the position
+     * @param index zero-based task position.
+     * @return task at the position.
      */
     public Task get(int index) {
         return tasks.get(index);
@@ -59,8 +59,8 @@ public class TaskList implements Iterable<Task> {
     /**
      * Removes and returns the task at the specified zero-based position.
      *
-     * @param index zero-based task position
-     * @return removed task
+     * @param index zero-based task position.
+     * @return removed task.
      */
     public Task remove(int index) {
         return tasks.remove(index);
@@ -69,7 +69,7 @@ public class TaskList implements Iterable<Task> {
     /**
      * Returns the number of tasks in the list.
      *
-     * @return task count
+     * @return task count.
      */
     public int size() {
         return tasks.size();
@@ -78,7 +78,7 @@ public class TaskList implements Iterable<Task> {
     /**
      * Returns an iterator that does not allow callers to change the list structure.
      *
-     * @return read-only task iterator
+     * @return read-only task iterator.
      */
     @Override
     public Iterator<Task> iterator() {

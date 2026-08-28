@@ -9,7 +9,7 @@ public class StorageException extends KiboException {
     /**
      * Creates a storage exception with a user-facing message.
      *
-     * @param message explanation of the storage problem
+     * @param message explanation of the storage problem.
      */
     public StorageException(String message) {
         super(message);

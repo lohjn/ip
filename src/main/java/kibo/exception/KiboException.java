@@ -9,7 +9,7 @@ public class KiboException extends Exception {
     /**
      * Creates a chatbot-specific exception with a user-facing message.
      *
-     * @param message explanation of the invalid command
+     * @param message explanation of the invalid command.
      */
     public KiboException(String message) {
         super(message);

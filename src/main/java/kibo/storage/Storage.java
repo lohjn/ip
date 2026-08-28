@@ -1,21 +1,22 @@
 package kibo.storage;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+
 import kibo.exception.StorageException;
 import kibo.task.Deadline;
 import kibo.task.Event;
 import kibo.task.Task;
 import kibo.task.TaskList;
 import kibo.task.Todo;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.AtomicMoveNotSupportedException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Saves and loads Kibo tasks in a simple text file.
@@ -32,8 +33,8 @@ public class Storage {
     /**
      * Saves every task, replacing the previous saved list.
      *
-     * @param tasks tasks to save
-     * @throws StorageException if the file cannot be written
+     * @param tasks tasks to save.
+     * @throws StorageException if the file cannot be written.
      */
     public static void save(TaskList tasks) throws StorageException {
         StringBuilder contents = new StringBuilder();
@@ -54,8 +55,8 @@ public class Storage {
     /**
      * Loads tasks saved during a previous run of Kibo.
      *
-     * @return tasks reconstructed from the save file, or an empty list when no file exists
-     * @throws StorageException if the save file cannot be read or does not use the expected format
+     * @return tasks reconstructed from the save file, or an empty list when no file exists.
+     * @throws StorageException if the save file cannot be read or does not use the expected format.
      */
     public static ArrayList<Task> load() throws StorageException {
         ArrayList<Task> tasks = new ArrayList<>();
@@ -80,9 +81,9 @@ public class Storage {
     /**
      * Converts one task to the on-disk format.
      *
-     * @param task task to serialize
-     * @return text representation of the task
-     * @throws StorageException if a task field contains the storage delimiter
+     * @param task task to serialize.
+     * @return text representation of the task.
+     * @throws StorageException if a task field contains the storage delimiter.
      */
     private static String toStorageLine(Task task) throws StorageException {
         String doneStatus = task.isDone() ? "1" : "0";
@@ -106,8 +107,8 @@ public class Storage {
     /**
      * Replaces the saved file after its complete new contents have been written.
      *
-     * @param temporaryPath complete temporary save file
-     * @throws IOException if the save file cannot be replaced
+     * @param temporaryPath complete temporary save file.
+     * @throws IOException if the save file cannot be replaced.
      */
     private static void replaceSaveFile(Path temporaryPath) throws IOException {
         try {
@@ -121,8 +122,8 @@ public class Storage {
     /**
      * Ensures a task field does not contain the delimiter used by the current file format.
      *
-     * @param text task text to save
-     * @throws StorageException if the text would make the saved file ambiguous
+     * @param text task text to save.
+     * @throws StorageException if the text would make the saved file ambiguous.
      */
     private static void validateStorageText(String text) throws StorageException {
         if (text.contains(" | ")) {
@@ -134,10 +135,10 @@ public class Storage {
     /**
      * Reconstructs one task from a line in the save file.
      *
-     * @param line one saved task
-     * @param lineNumber one-based line number used when reporting malformed data
-     * @return reconstructed task
-     * @throws StorageException if the line is not a supported saved-task format
+     * @param line one saved task.
+     * @param lineNumber one-based line number used when reporting malformed data.
+     * @return reconstructed task.
+     * @throws StorageException if the line is not a supported saved-task format.
      */
     private static Task toTask(String line, int lineNumber) throws StorageException {
         String[] parts = line.split(" \\| ", -1);
@@ -148,36 +149,36 @@ public class Storage {
 
         Task task;
         switch (parts[0]) {
-        case "T":
-            if (parts.length != 3) {
+            case "T":
+                if (parts.length != 3) {
+                    throw invalidStorageLine(lineNumber);
+                }
+                task = new Todo(parts[2]);
+                break;
+            case "D":
+                if (parts.length != 4) {
+                    throw invalidStorageLine(lineNumber);
+                }
+                if (parts[3].isBlank()) {
+                    throw invalidStorageLine(lineNumber);
+                }
+                try {
+                    task = new Deadline(parts[2], LocalDate.parse(parts[3]));
+                } catch (DateTimeParseException exception) {
+                    throw invalidStorageLine(lineNumber);
+                }
+                break;
+            case "E":
+                if (parts.length != 5) {
+                    throw invalidStorageLine(lineNumber);
+                }
+                if (parts[3].isBlank() || parts[4].isBlank()) {
+                    throw invalidStorageLine(lineNumber);
+                }
+                task = new Event(parts[2], parts[3], parts[4]);
+                break;
+            default:
                 throw invalidStorageLine(lineNumber);
-            }
-            task = new Todo(parts[2]);
-            break;
-        case "D":
-            if (parts.length != 4) {
-                throw invalidStorageLine(lineNumber);
-            }
-            if (parts[3].isBlank()) {
-                throw invalidStorageLine(lineNumber);
-            }
-            try {
-                task = new Deadline(parts[2], LocalDate.parse(parts[3]));
-            } catch (DateTimeParseException exception) {
-                throw invalidStorageLine(lineNumber);
-            }
-            break;
-        case "E":
-            if (parts.length != 5) {
-                throw invalidStorageLine(lineNumber);
-            }
-            if (parts[3].isBlank() || parts[4].isBlank()) {
-                throw invalidStorageLine(lineNumber);
-            }
-            task = new Event(parts[2], parts[3], parts[4]);
-            break;
-        default:
-            throw invalidStorageLine(lineNumber);
         }
 
         if (parts[1].equals("1")) {
@@ -189,8 +190,8 @@ public class Storage {
     /**
      * Creates a clear error for a malformed saved task.
      *
-     * @param lineNumber one-based line number in the save file
-     * @return storage exception describing the problem
+     * @param lineNumber one-based line number in the save file.
+     * @return storage exception describing the problem.
      */
     private static StorageException invalidStorageLine(int lineNumber) {
         return new StorageException("The saved task on line " + lineNumber

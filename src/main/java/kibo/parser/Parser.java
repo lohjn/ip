@@ -1,13 +1,14 @@
 package kibo.parser;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 import kibo.exception.InvalidCommandException;
 import kibo.exception.KiboException;
 import kibo.task.Deadline;
 import kibo.task.Event;
 import kibo.task.Task;
 import kibo.task.Todo;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 /**
  * Interprets and validates commands entered by the user.
@@ -28,9 +29,9 @@ public class Parser {
     /**
      * Identifies a valid command from the full user input.
      *
-     * @param input full user input
-     * @return command type represented by the input
-     * @throws InvalidCommandException if the input is empty or does not begin with a command
+     * @param input full user input.
+     * @return command type represented by the input.
+     * @throws InvalidCommandException if the input is empty or does not begin with a command.
      */
     public CommandType parseCommandType(String input) throws InvalidCommandException {
         if (input.isEmpty()) {
@@ -51,9 +52,9 @@ public class Parser {
     /**
      * Rejects additional words supplied to a command that has no arguments.
      *
-     * @param input full user input
-     * @param command command type
-     * @throws InvalidCommandException if the user supplied extra text
+     * @param input full user input.
+     * @param command command type.
+     * @throws InvalidCommandException if the user supplied extra text.
      */
     public void ensureNoArguments(String input, CommandType command)
             throws InvalidCommandException {
@@ -66,11 +67,11 @@ public class Parser {
     /**
      * Extracts and validates the task number used by mark, unmark, and delete commands.
      *
-     * @param input full user input
-     * @param command command type
-     * @param taskCount number of tasks currently stored
-     * @return zero-based task index
-     * @throws KiboException if the number is missing, invalid, or out of range
+     * @param input full user input.
+     * @param command command type.
+     * @param taskCount number of tasks currently stored.
+     * @return zero-based task index.
+     * @throws KiboException if the number is missing, invalid, or out of range.
      */
     public int parseTaskIndex(String input, CommandType command, int taskCount)
             throws KiboException {
@@ -93,9 +94,9 @@ public class Parser {
     /**
      * Creates a to-do task from validated user input.
      *
-     * @param input full todo command
-     * @return parsed to-do task
-     * @throws InvalidCommandException if the description is empty
+     * @param input full todo command.
+     * @return parsed to-do task.
+     * @throws InvalidCommandException if the description is empty.
      */
     public Task parseTodo(String input) throws InvalidCommandException {
         String description = input.substring(CommandType.TODO.getKeyword().length()).trim();
@@ -109,9 +110,9 @@ public class Parser {
     /**
      * Creates a deadline task from validated user input.
      *
-     * @param input full deadline command
-     * @return parsed deadline task
-     * @throws InvalidCommandException if the description, marker, or date is missing or invalid
+     * @param input full deadline command.
+     * @return parsed deadline task.
+     * @throws InvalidCommandException if the description, marker, or date is missing or invalid.
      */
     public Task parseDeadline(String input) throws InvalidCommandException {
         String taskDetails = input.substring(CommandType.DEADLINE.getKeyword().length()).trim();
@@ -141,9 +142,9 @@ public class Parser {
     /**
      * Creates an event task from validated user input.
      *
-     * @param input full event command
-     * @return parsed event task
-     * @throws InvalidCommandException if the description, markers, start, or end is missing
+     * @param input full event command.
+     * @return parsed event task.
+     * @throws InvalidCommandException if the description, markers, start, or end is missing.
      */
     public Task parseEvent(String input) throws InvalidCommandException {
         String taskDetails = input.substring(CommandType.EVENT.getKeyword().length()).trim();

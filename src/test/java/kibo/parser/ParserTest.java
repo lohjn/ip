@@ -1,16 +1,17 @@
 package kibo.parser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.time.LocalDate;
+
+import org.junit.jupiter.api.Test;
 
 import kibo.exception.InvalidCommandException;
 import kibo.task.Deadline;
 import kibo.task.Event;
 import kibo.task.Task;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests command parsing that can be checked without running the command-line UI.
@@ -67,7 +68,7 @@ public class ParserTest {
     /**
      * Verifies each malformed deadline command produces the standard usage error.
      *
-     * @param input malformed deadline command
+     * @param input malformed deadline command.
      */
     private void assertInvalidDeadline(String input) {
         InvalidCommandException exception = assertThrows(InvalidCommandException.class,
@@ -79,7 +80,7 @@ public class ParserTest {
     /**
      * Verifies each malformed event command produces the standard usage error.
      *
-     * @param input malformed event command
+     * @param input malformed event command.
      */
     private void assertInvalidEvent(String input) {
         InvalidCommandException exception = assertThrows(InvalidCommandException.class,
