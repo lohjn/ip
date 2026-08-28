@@ -24,6 +24,12 @@ public class Storage {
     private static final Path SAVE_PATH = Path.of("data", "duke.txt");
 
     /**
+     * Creates a storage helper for Kibo's task data.
+     */
+    public Storage() {
+    }
+
+    /**
      * Saves every task, replacing the previous saved list.
      *
      * @param tasks tasks to save
@@ -76,6 +82,7 @@ public class Storage {
      *
      * @param task task to serialize
      * @return text representation of the task
+     * @throws StorageException if a task field contains the storage delimiter
      */
     private static String toStorageLine(Task task) throws StorageException {
         String doneStatus = task.isDone() ? "1" : "0";
@@ -128,6 +135,7 @@ public class Storage {
      * Reconstructs one task from a line in the save file.
      *
      * @param line one saved task
+     * @param lineNumber one-based line number used when reporting malformed data
      * @return reconstructed task
      * @throws StorageException if the line is not a supported saved-task format
      */

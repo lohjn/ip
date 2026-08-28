@@ -4,7 +4,9 @@ package kibo.task;
  * Represents a task and whether it has been completed.
  */
 public class Task {
+    /** Description entered by the user. */
     protected String description;
+    /** Whether the task has been completed. */
     protected boolean isDone;
 
     /**
@@ -58,6 +60,11 @@ public class Task {
         return isDone;
     }
 
+    /**
+     * Returns the task description with its completion status.
+     *
+     * @return task text in the form {@code [status] description}
+     */
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;

@@ -20,6 +20,12 @@ public class Parser {
             "Usage: event [description] /from [start] /to [end]";
 
     /**
+     * Creates a parser for interpreting Kibo commands.
+     */
+    public Parser() {
+    }
+
+    /**
      * Identifies a valid command from the full user input.
      *
      * @param input full user input

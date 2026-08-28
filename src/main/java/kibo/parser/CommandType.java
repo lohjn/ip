@@ -4,14 +4,23 @@ package kibo.parser;
  * Identifies the commands understood by the Kibo chatbot.
  */
 public enum CommandType {
+    /** Creates a task without a date or time. */
     TODO("todo"),
+    /** Creates a task that must be completed by a date. */
     DEADLINE("deadline"),
+    /** Creates a task occurring between a start and end. */
     EVENT("event"),
+    /** Displays all stored tasks. */
     LIST("list"),
+    /** Marks a task as completed. */
     MARK("mark"),
+    /** Marks a task as not completed. */
     UNMARK("unmark"),
+    /** Removes a task from the list. */
     DELETE("delete"),
+    /** Exits Kibo. */
     BYE("bye"),
+    /** Represents input that does not match a supported command. */
     UNKNOWN("");
 
     private final String keyword;

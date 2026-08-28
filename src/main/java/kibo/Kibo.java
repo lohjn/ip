@@ -13,6 +13,17 @@ import kibo.ui.Ui;
  * Runs the Kibo chatbot.
  */
 public class Kibo {
+    /**
+     * Creates the Kibo application entry point.
+     */
+    public Kibo() {
+    }
+
+    /**
+     * Starts Kibo and processes commands until the user exits or input ends.
+     *
+     * @param args command-line arguments; not used by Kibo
+     */
     public static void main(String[] args) {
         Ui ui = new Ui();
         Parser parser = new Parser();
@@ -111,6 +122,8 @@ public class Kibo {
      *
      * @param tasks task storage
      * @param task task to add
+     * @param ui console interface used to display the confirmation
+     * @throws StorageException if the updated task list cannot be saved
      */
     private static void addTask(TaskList tasks, Task task, Ui ui) throws StorageException {
         tasks.add(task);

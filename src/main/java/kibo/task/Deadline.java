@@ -10,6 +10,7 @@ import java.util.Locale;
 public class Deadline extends Task {
     private static final DateTimeFormatter DISPLAY_FORMAT =
             DateTimeFormatter.ofPattern("MMM dd uuuu", Locale.ENGLISH);
+    /** Date by which the task must be completed. */
     protected LocalDate by;
 
     /**
@@ -32,6 +33,11 @@ public class Deadline extends Task {
         return by;
     }
 
+    /**
+     * Returns this task in the deadline display format.
+     *
+     * @return task text containing the {@code [D]} type marker and formatted deadline date
+     */
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + by.format(DISPLAY_FORMAT) + ")";

@@ -4,7 +4,9 @@ package kibo.task;
  * Represents a task that occurs between a start and end date or time.
  */
 public class Event extends Task {
+    /** User-entered start date or time. */
     protected String from;
+    /** User-entered end date or time. */
     protected String to;
 
     /**
@@ -38,6 +40,11 @@ public class Event extends Task {
         return to;
     }
 
+    /**
+     * Returns this task in the event display format.
+     *
+     * @return task text containing the {@code [E]} type marker, start, and end
+     */
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
