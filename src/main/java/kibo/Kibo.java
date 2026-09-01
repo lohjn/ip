@@ -111,7 +111,7 @@ public class Kibo {
                         Task task = parser.parseEvent(input);
                         addTask(tasks, task, ui);
                     }
-                    case UNKNOWN -> throw new IllegalStateException("Unexpected command type");
+                    default -> throw new IllegalStateException("Unexpected command type");
                 }
             } catch (KiboException exception) {
                 ui.showError(exception);

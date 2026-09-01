@@ -38,8 +38,9 @@ public class ParserTest {
 
     @Test
     void parseDeadline_invalidDate_throwsInvalidCommandException() {
-        InvalidCommandException exception = assertThrows(InvalidCommandException.class,
-                () -> parser.parseDeadline("deadline return book /by 2019-02-29"));
+        InvalidCommandException exception = assertThrows(
+                InvalidCommandException.class, () ->
+                        parser.parseDeadline("deadline return book /by 2019-02-29"));
 
         assertEquals("The deadline date must use yyyy-MM-dd format.\n"
                 + "Usage: deadline [description] /by yyyy-MM-dd", exception.getMessage());
@@ -72,8 +73,8 @@ public class ParserTest {
 
     @Test
     void parseFindKeyword_emptyKeyword_throwsInvalidCommandException() {
-        InvalidCommandException exception = assertThrows(InvalidCommandException.class,
-                () -> parser.parseFindKeyword("find"));
+        InvalidCommandException exception = assertThrows(
+                InvalidCommandException.class, () -> parser.parseFindKeyword("find"));
 
         assertEquals("The search keyword cannot be empty.\nUsage: find [keyword]",
                 exception.getMessage());
@@ -85,8 +86,8 @@ public class ParserTest {
      * @param input malformed deadline command.
      */
     private void assertInvalidDeadline(String input) {
-        InvalidCommandException exception = assertThrows(InvalidCommandException.class,
-                () -> parser.parseDeadline(input));
+        InvalidCommandException exception = assertThrows(
+                InvalidCommandException.class, () -> parser.parseDeadline(input));
         assertEquals("A deadline needs a description and /by date.\n"
                 + "Usage: deadline [description] /by yyyy-MM-dd", exception.getMessage());
     }
@@ -97,8 +98,8 @@ public class ParserTest {
      * @param input malformed event command.
      */
     private void assertInvalidEvent(String input) {
-        InvalidCommandException exception = assertThrows(InvalidCommandException.class,
-                () -> parser.parseEvent(input));
+        InvalidCommandException exception = assertThrows(
+                InvalidCommandException.class, () -> parser.parseEvent(input));
         assertEquals("An event needs a description, /from start, and /to end.\n"
                 + "Usage: event [description] /from [start] /to [end]", exception.getMessage());
     }
