@@ -3,8 +3,8 @@
 ## Test environment
 
 - Working directory: repository root
-- Build command: `find src/main/java -name '*.java' -print0 | xargs -0 javac -d out`
-- Launch command: `java -cp out kibo.Kibo`
+- Build command: `./gradlew classes`
+- Launch command: `java -cp build/classes/java/main kibo.Kibo`
 - Timeout: 5 seconds
 - Setup/reset: start a fresh process for each test case. Before the test session, back up any
   existing `data/duke.txt` file and restore it when testing finishes. Before UI-001 through
@@ -422,7 +422,7 @@ Setup: use a fresh empty temporary working directory with no `data/` folder. Lau
 the compiled classes from the repository, for example:
 
 ```text
-java -cp /absolute/path/to/ip/out kibo.Kibo
+java -cp /absolute/path/to/ip/build/classes/java/main kibo.Kibo
 ```
 
 Input, in order:
@@ -465,9 +465,10 @@ Expected contents of that file:
 T | 0 | first task
 ```
 
-## UI-009: Launch the packaged fat JAR
+## UI-009: Launch the packaged JavaFX application
 
-Aim: Verify that the Shadow plugin produces an executable fat JAR with Kibo as its main class.
+Aim: Verify that the Shadow plugin produces an executable fat JAR that opens Kibo's JavaFX
+chat window.
 
 Setup: run `./gradlew shadowJar` from the repository root. Then use a fresh empty temporary
 working directory with no `data/` folder and launch the JAR using its absolute path, for example:
@@ -476,27 +477,12 @@ working directory with no `data/` folder and launch the JAR using its absolute p
 java -jar /absolute/path/to/ip/build/libs/kibo.jar
 ```
 
-Input, in order:
+Manual interaction, in order:
 
-```text
-bye
-```
-
-Expected program output:
-
-```text
- _  __ _ _           
-| |/ /(_) |__   ___  
-| ' / | | '_ \ / _ \
-| . \ | | |_) | (_) |
-|_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
-____________________________________________________________
-____________________________________________________________
- Bye. Hope to see you again soon!
-____________________________________________________________
-```
+1. Confirm the window opens with Kibo's welcome message.
+2. Enter `todo first task` and confirm the user and Kibo dialog boxes appear.
+3. Enter `list` and confirm the task is shown.
+4. Enter `bye` and confirm the input field and Send button become disabled.
 
 ## UI-010: Find tasks by description
 

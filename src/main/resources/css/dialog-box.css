@@ -1,0 +1,28 @@
+.root {
+    -fx-padding: 7px 4px;
+}
+
+#dialog {
+    -fx-background-color: #d7eef1;
+    -fx-background-radius: 16px 16px 4px 16px;
+    -fx-padding: 10px 13px;
+    -fx-text-fill: #17343a;
+}
+
+#dialog.reply-label {
+    -fx-background-color: white;
+    -fx-background-radius: 16px 16px 16px 4px;
+}
+
+#avatar {
+    -fx-background-color: #475d66;
+    -fx-background-radius: 23px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+#avatar.kibo-avatar {
+    -fx-background-color: #297c86;
+    -fx-font-size: 18px;
+}

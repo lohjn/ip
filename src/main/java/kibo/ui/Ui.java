@@ -31,9 +31,18 @@ public class Ui {
      */
     public void showWelcome() {
         System.out.print(BANNER);
-        System.out.println("Hello! I'm Kibo. I am AI.");
-        System.out.println("What can I do for you?");
+        System.out.println(getWelcomeMessage());
         showSeparator();
+    }
+
+    /**
+     * Returns Kibo's greeting.
+     *
+     * @return welcome message.
+     */
+    public String getWelcomeMessage() {
+        return "Hello! I'm Kibo. I am AI.\n"
+                + "What can I do for you?";
     }
 
     /**
@@ -62,88 +71,105 @@ public class Ui {
     }
 
     /**
-     * Displays the task list.
+     * Displays a response using the console's standard indentation.
+     *
+     * @param message response to display.
+     */
+    public void showMessage(String message) {
+        System.out.println(" " + message.replace("\n", "\n "));
+    }
+
+    /**
+     * Returns the formatted task list.
      *
      * @param tasks tasks to display.
+     * @return task-list message.
      */
-    public void showTaskList(TaskList tasks) {
-        System.out.println(" Here are the tasks in your list:");
+    public String getTaskListMessage(TaskList tasks) {
+        StringBuilder message = new StringBuilder("Here are the tasks in your list:");
         for (int index = 0; index < tasks.size(); index++) {
-            System.out.println(" " + (index + 1) + "." + tasks.get(index));
+            message.append("\n").append(index + 1).append(".").append(tasks.get(index));
         }
+        return message.toString();
     }
 
     /**
-     * Displays tasks that match a search keyword.
+     * Returns tasks that match a search keyword.
      *
      * @param matchingTasks matching tasks to display.
+     * @return matching-task message.
      */
-    public void showMatchingTasks(TaskList matchingTasks) {
-        System.out.println(" Here are the matching tasks in your list:");
+    public String getMatchingTasksMessage(TaskList matchingTasks) {
+        StringBuilder message = new StringBuilder("Here are the matching tasks in your list:");
         for (int index = 0; index < matchingTasks.size(); index++) {
-            System.out.println(" " + (index + 1) + "." + matchingTasks.get(index));
+            message.append("\n").append(index + 1).append(".")
+                    .append(matchingTasks.get(index));
         }
+        return message.toString();
     }
 
     /**
-     * Displays confirmation that a task was added.
+     * Returns confirmation that a task was added.
      *
      * @param task added task.
      * @param taskCount number of tasks after adding.
+     * @return task-added message.
      */
-    public void showTaskAdded(Task task, int taskCount) {
-        System.out.println(" Got it. I've added this task:");
-        System.out.println("   " + task);
-        System.out.println(" Now you have " + taskCount + " tasks in the list.");
+    public String getTaskAddedMessage(Task task, int taskCount) {
+        return "Got it. I've added this task:\n"
+                + "  " + task + "\n"
+                + "Now you have " + taskCount + " tasks in the list.";
     }
 
     /**
-     * Displays confirmation that a task was marked done.
+     * Returns confirmation that a task was marked done.
      *
      * @param task marked task.
+     * @return task-marked message.
      */
-    public void showTaskMarked(Task task) {
-        System.out.println(" Nice! I've marked this task as done:");
-        System.out.println("   " + task);
+    public String getTaskMarkedMessage(Task task) {
+        return "Nice! I've marked this task as done:\n  " + task;
     }
 
     /**
-     * Displays confirmation that a task was marked not done.
+     * Returns confirmation that a task was marked not done.
      *
      * @param task unmarked task.
+     * @return task-unmarked message.
      */
-    public void showTaskUnmarked(Task task) {
-        System.out.println(" OK, I've marked this task as not done yet:");
-        System.out.println("   " + task);
+    public String getTaskUnmarkedMessage(Task task) {
+        return "OK, I've marked this task as not done yet:\n  " + task;
     }
 
     /**
-     * Displays confirmation that a task was removed.
+     * Returns confirmation that a task was removed.
      *
      * @param task removed task.
      * @param taskCount number of tasks after removal.
+     * @return task-deleted message.
      */
-    public void showTaskDeleted(Task task, int taskCount) {
-        System.out.println(" Noted. I've removed this task:");
-        System.out.println("   " + task);
-        System.out.println(" Now you have " + taskCount + " tasks in the list.");
+    public String getTaskDeletedMessage(Task task, int taskCount) {
+        return "Noted. I've removed this task:\n"
+                + "  " + task + "\n"
+                + "Now you have " + taskCount + " tasks in the list.";
     }
 
     /**
-     * Displays a user-facing chatbot error.
+     * Returns a user-facing chatbot error.
      *
      * @param exception error to display.
+     * @return error message.
      */
-    public void showError(KiboException exception) {
-        String indentedMessage = exception.getMessage().replace("\n", "\n ");
-        System.out.println(" " + indentedMessage);
+    public String getErrorMessage(KiboException exception) {
+        return exception.getMessage();
     }
 
     /**
-     * Displays Kibo's farewell message.
+     * Returns Kibo's farewell message.
+     *
+     * @return farewell message.
      */
-    public void showGoodbye() {
-        System.out.println(" Bye. Hope to see you again soon!");
-        showSeparator();
+    public String getGoodbyeMessage() {
+        return "Bye. Hope to see you again soon!";
     }
 }
