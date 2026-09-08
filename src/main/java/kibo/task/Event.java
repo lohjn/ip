@@ -5,9 +5,9 @@ package kibo.task;
  */
 public class Event extends Task {
     /** User-entered start date or time. */
-    protected String from;
+    private final String from;
     /** User-entered end date or time. */
-    protected String to;
+    private final String to;
 
     /**
      * Creates an event task with the given description, start, and end.

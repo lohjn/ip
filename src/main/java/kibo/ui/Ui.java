@@ -87,11 +87,7 @@ public class Ui {
      * @return task-list message.
      */
     public String getTaskListMessage(TaskList tasks) {
-        StringBuilder message = new StringBuilder("Here are the tasks in your list:");
-        for (int index = 0; index < tasks.size(); index++) {
-            message.append("\n").append(index + 1).append(".").append(tasks.get(index));
-        }
-        return message.toString();
+        return getNumberedTasksMessage("Here are the tasks in your list:", tasks);
     }
 
     /**
@@ -101,12 +97,8 @@ public class Ui {
      * @return matching-task message.
      */
     public String getMatchingTasksMessage(TaskList matchingTasks) {
-        StringBuilder message = new StringBuilder("Here are the matching tasks in your list:");
-        for (int index = 0; index < matchingTasks.size(); index++) {
-            message.append("\n").append(index + 1).append(".")
-                    .append(matchingTasks.get(index));
-        }
-        return message.toString();
+        return getNumberedTasksMessage(
+                "Here are the matching tasks in your list:", matchingTasks);
     }
 
     /**
@@ -188,5 +180,20 @@ public class Ui {
      */
     private static String joinLines(String... lines) {
         return String.join("\n", lines);
+    }
+
+    /**
+     * Returns a heading followed by a numbered list of tasks.
+     *
+     * @param heading text shown before the tasks.
+     * @param tasks tasks to number and display.
+     * @return heading and numbered tasks as one message.
+     */
+    private static String getNumberedTasksMessage(String heading, TaskList tasks) {
+        StringBuilder message = new StringBuilder(heading);
+        for (int index = 0; index < tasks.size(); index++) {
+            message.append("\n").append(index + 1).append(".").append(tasks.get(index));
+        }
+        return message.toString();
     }
 }

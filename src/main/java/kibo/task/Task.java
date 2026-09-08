@@ -5,9 +5,9 @@ package kibo.task;
  */
 public class Task {
     /** Description entered by the user. */
-    protected String description;
+    private final String description;
     /** Whether the task has been completed. */
-    protected boolean isDone;
+    private boolean isDone;
 
     /**
      * Creates an incomplete task with the given description.
