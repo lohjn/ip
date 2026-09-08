@@ -69,7 +69,7 @@ public class Storage {
             for (int index = 0; index < lines.size(); index++) {
                 String line = lines.get(index);
                 if (!line.isBlank()) {
-                    tasks.add(toTask(line, index + 1));
+                    tasks.add(parseSavedTask(line, index + 1));
                 }
             }
             return tasks;
@@ -140,51 +140,61 @@ public class Storage {
      * @return reconstructed task.
      * @throws StorageException if the line is not a supported saved-task format.
      */
-    private static Task toTask(String line, int lineNumber) throws StorageException {
+    private static Task parseSavedTask(String line, int lineNumber) throws StorageException {
         String[] parts = line.split(" \\| ", -1);
         if (parts.length < 3 || (!parts[1].equals("0") && !parts[1].equals("1"))
                 || parts[2].isBlank()) {
             throw invalidStorageLine(lineNumber);
         }
 
-        Task task;
-        switch (parts[0]) {
-            case "T":
-                if (parts.length != 3) {
-                    throw invalidStorageLine(lineNumber);
-                }
-                task = new Todo(parts[2]);
-                break;
-            case "D":
-                if (parts.length != 4) {
-                    throw invalidStorageLine(lineNumber);
-                }
-                if (parts[3].isBlank()) {
-                    throw invalidStorageLine(lineNumber);
-                }
-                try {
-                    task = new Deadline(parts[2], LocalDate.parse(parts[3]));
-                } catch (DateTimeParseException exception) {
-                    throw invalidStorageLine(lineNumber);
-                }
-                break;
-            case "E":
-                if (parts.length != 5) {
-                    throw invalidStorageLine(lineNumber);
-                }
-                if (parts[3].isBlank() || parts[4].isBlank()) {
-                    throw invalidStorageLine(lineNumber);
-                }
-                task = new Event(parts[2], parts[3], parts[4]);
-                break;
-            default:
-                throw invalidStorageLine(lineNumber);
-        }
-
+        Task task = parseSavedTaskByType(parts, lineNumber);
         if (parts[1].equals("1")) {
             task.markAsDone();
         }
         return task;
+    }
+
+    private static Task parseSavedTaskByType(String[] parts, int lineNumber)
+            throws StorageException {
+        switch (parts[0]) {
+            case "T":
+                return parseSavedTodo(parts, lineNumber);
+            case "D":
+                return parseSavedDeadline(parts, lineNumber);
+            case "E":
+                return parseSavedEvent(parts, lineNumber);
+            default:
+                throw invalidStorageLine(lineNumber);
+        }
+    }
+
+    private static Task parseSavedTodo(String[] parts, int lineNumber)
+            throws StorageException {
+        if (parts.length != 3) {
+            throw invalidStorageLine(lineNumber);
+        }
+        return new Todo(parts[2]);
+    }
+
+    private static Task parseSavedDeadline(String[] parts, int lineNumber)
+            throws StorageException {
+        if (parts.length != 4 || parts[3].isBlank()) {
+            throw invalidStorageLine(lineNumber);
+        }
+
+        try {
+            return new Deadline(parts[2], LocalDate.parse(parts[3]));
+        } catch (DateTimeParseException exception) {
+            throw invalidStorageLine(lineNumber);
+        }
+    }
+
+    private static Task parseSavedEvent(String[] parts, int lineNumber)
+            throws StorageException {
+        if (parts.length != 5 || parts[3].isBlank() || parts[4].isBlank()) {
+            throw invalidStorageLine(lineNumber);
+        }
+        return new Event(parts[2], parts[3], parts[4]);
     }
 
     /**
