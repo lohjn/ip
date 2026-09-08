@@ -123,6 +123,10 @@ public class Kibo {
      * @throws KiboException if the command is invalid or storage cannot be updated.
      */
     private String executeCommand(String input, CommandType commandType) throws KiboException {
+        assert commandType != null : "A parsed command type must not be null";
+        assert commandType != CommandType.UNKNOWN
+                : "Unknown commands must be rejected before execution";
+
         switch (commandType) {
             case BYE:
                 parser.ensureNoArguments(input, commandType);

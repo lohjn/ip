@@ -75,6 +75,12 @@ public class Parser {
      */
     public int parseTaskIndex(String input, CommandType command, int taskCount)
             throws KiboException {
+        assert command == CommandType.MARK
+                || command == CommandType.UNMARK
+                || command == CommandType.DELETE
+                : "Only numbered task commands can have a task index";
+        assert taskCount >= 0 : "The number of stored tasks cannot be negative";
+
         String numberText = input.substring(command.getKeyword().length()).trim();
         int taskNumber;
 
