@@ -80,6 +80,18 @@ public class ParserTest {
                 exception.getMessage());
     }
 
+    @Test
+    void parseTaskIndex_nonNumberedCommand_throwsAssertionError() {
+        assertThrows(AssertionError.class, () ->
+                parser.parseTaskIndex("todo 1", CommandType.TODO, 1));
+    }
+
+    @Test
+    void parseTaskIndex_negativeTaskCount_throwsAssertionError() {
+        assertThrows(AssertionError.class, () ->
+                parser.parseTaskIndex("mark 1", CommandType.MARK, -1));
+    }
+
     /**
      * Verifies each malformed deadline command produces the standard usage error.
      *
