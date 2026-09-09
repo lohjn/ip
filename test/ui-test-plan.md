@@ -9,8 +9,8 @@
 - Setup/reset: start a fresh process for each test case. Before the test session, back up any
   existing `data/duke.txt` file and restore it when testing finishes. Before UI-001 through
   UI-004 and UI-006, replace `data/duke.txt` with an empty file so the program starts with no
-  tasks. Before UI-005, UI-007, and UI-010, replace it with the fixture shown in that case. The
-  program writes test data to `data/duke.txt` while each case runs.
+  tasks. Before UI-005, UI-007, UI-010, and UI-011, replace it with the fixture shown in that
+  case. The program writes test data to `data/duke.txt` while each case runs.
 - Output comparison: exact equality after converting CRLF to LF and ignoring one final newline
 - Expected exit behavior: exit normally after receiving `bye`
 
@@ -120,7 +120,7 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Sorry, that is not a valid command.
- Available commands: todo, deadline, event, list, find, mark, unmark, delete, bye
+ Available commands: todo, deadline, event, list, find, schedule, mark, unmark, delete, bye
 ____________________________________________________________
 ____________________________________________________________
  A deadline needs a description and /by date.
@@ -365,7 +365,7 @@ What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
  Please enter a command.
- Available commands: todo, deadline, event, list, find, mark, unmark, delete, bye
+ Available commands: todo, deadline, event, list, find, schedule, mark, unmark, delete, bye
 ____________________________________________________________
 ____________________________________________________________
  This command does not take any additional text.
@@ -533,6 +533,68 @@ ____________________________________________________________
 ____________________________________________________________
  The search keyword cannot be empty.
  Usage: find [keyword]
+____________________________________________________________
+____________________________________________________________
+ Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## UI-011: View deadlines and dated events by date
+
+Aim: Verify that `schedule` returns matching deadlines and dated events in their original order,
+excludes todos and legacy free-form events, and rejects missing or invalid dates.
+
+Setup fixture for `data/duke.txt`:
+
+```text
+T | 0 | undated todo
+E | 0 | legacy meeting | Mon 2pm | 4pm
+E | 0 | dated meeting | 2019-12-02 2pm | 4pm
+D | 0 | submit report | 2019-12-02
+D | 0 | later deadline | 2019-12-03
+```
+
+Input, in order:
+
+```text
+schedule 2019-12-02
+schedule 2019-12-04
+schedule
+schedule 2019-02-29
+event invalid date /from 2019-02-29 2pm /to 4pm
+bye
+```
+
+Expected program output:
+
+```text
+ _  __ _ _           
+| |/ /(_) |__   ___  
+| ' / | | '_ \ / _ \
+| . \ | | |_) | (_) |
+|_|\_\|_|_.__/ \___/
+Hello! I'm Kibo. I am AI.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+ Here is your schedule for Dec 02 2019:
+ 1.[E][ ] dated meeting (from: 2019-12-02 2pm to: 4pm)
+ 2.[D][ ] submit report (by: Dec 02 2019)
+____________________________________________________________
+____________________________________________________________
+ Here is your schedule for Dec 04 2019:
+____________________________________________________________
+____________________________________________________________
+ The schedule date must use yyyy-MM-dd format.
+ Usage: schedule yyyy-MM-dd
+____________________________________________________________
+____________________________________________________________
+ The schedule date must use yyyy-MM-dd format.
+ Usage: schedule yyyy-MM-dd
+____________________________________________________________
+____________________________________________________________
+ The event start date must use yyyy-MM-dd format.
+ Date-aware event usage: event [description] /from yyyy-MM-dd [time] /to [end]
 ____________________________________________________________
 ____________________________________________________________
  Bye. Hope to see you again soon!

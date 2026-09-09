@@ -1,5 +1,6 @@
 package kibo.task;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -87,6 +88,20 @@ public class TaskList implements Iterable<Task> {
         List<Task> matchingTasks = tasks.stream()
                 .filter(task -> task.getDescription().toLowerCase(Locale.ROOT)
                         .contains(normalizedKeyword))
+                .toList();
+        return new TaskList(matchingTasks);
+    }
+
+    /**
+     * Returns deadlines and dated events scheduled on the supplied date.
+     *
+     * @param date date whose schedule is being viewed.
+     * @return matching tasks in their original order.
+     */
+    public TaskList findScheduledOn(LocalDate date) {
+        assert date != null : "A schedule date must not be null";
+        List<Task> matchingTasks = tasks.stream()
+                .filter(task -> task.isScheduledOn(date))
                 .toList();
         return new TaskList(matchingTasks);
     }

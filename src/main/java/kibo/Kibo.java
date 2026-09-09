@@ -1,5 +1,7 @@
 package kibo;
 
+import java.time.LocalDate;
+
 import kibo.exception.KiboException;
 import kibo.exception.StorageException;
 import kibo.parser.CommandType;
@@ -138,6 +140,9 @@ public class Kibo {
             case FIND:
                 String keyword = parser.parseFindKeyword(input);
                 return ui.getMatchingTasksMessage(tasks.find(keyword));
+            case SCHEDULE:
+                LocalDate date = parser.parseScheduleDate(input);
+                return ui.getScheduleMessage(tasks.findScheduledOn(date), date);
             case MARK:
                 return markTask(input, commandType);
             case UNMARK:

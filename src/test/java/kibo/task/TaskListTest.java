@@ -45,4 +45,32 @@ public class TaskListTest {
 
         assertEquals(0, matches.size());
     }
+
+    @Test
+    void findScheduledOn_matchingDeadlinesAndDatedEvents_returnsMatchesInOriginalOrder() {
+        Task todo = new Todo("read book");
+        Task legacyEvent = new Event("legacy meeting", "Mon 2pm", "4pm");
+        Task datedEvent = new Event("dated meeting", "2019-12-02 2pm", "4pm");
+        Task matchingDeadline = new Deadline("submit report", LocalDate.of(2019, 12, 2));
+        Task laterDeadline = new Deadline("return book", LocalDate.of(2019, 12, 3));
+        TaskList tasks = new TaskList(List.of(
+                todo, legacyEvent, datedEvent, matchingDeadline, laterDeadline));
+
+        TaskList matches = tasks.findScheduledOn(LocalDate.of(2019, 12, 2));
+
+        assertEquals(2, matches.size());
+        assertSame(datedEvent, matches.get(0));
+        assertSame(matchingDeadline, matches.get(1));
+    }
+
+    @Test
+    void findScheduledOn_dateWithoutTasks_returnsEmptyList() {
+        TaskList tasks = new TaskList(List.of(
+                new Deadline("submit report", LocalDate.of(2019, 12, 2)),
+                new Event("project meeting", "Mon 2pm", "4pm")));
+
+        TaskList matches = tasks.findScheduledOn(LocalDate.of(2019, 12, 3));
+
+        assertEquals(0, matches.size());
+    }
 }

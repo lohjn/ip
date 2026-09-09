@@ -1,5 +1,7 @@
 package kibo.task;
 
+import java.time.LocalDate;
+
 /**
  * Represents a task and whether it has been completed.
  */
@@ -61,6 +63,17 @@ public class Task {
      */
     public boolean isDone() {
         return isDone;
+    }
+
+    /**
+     * Returns whether this task belongs to the schedule for a date.
+     *
+     * @param date date whose schedule is being viewed.
+     * @return {@code false}, as a general task has no scheduled date.
+     */
+    public boolean isScheduledOn(LocalDate date) {
+        assert date != null : "A schedule date must not be null";
+        return false;
     }
 
     /**

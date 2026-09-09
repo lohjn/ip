@@ -1,5 +1,8 @@
 package kibo.ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Scanner;
 
 import kibo.exception.KiboException;
@@ -11,6 +14,8 @@ import kibo.task.TaskList;
  */
 public class Ui {
     private static final String SEPARATOR = "____________________________________________________________";
+    private static final DateTimeFormatter DATE_FORMAT =
+            DateTimeFormatter.ofPattern("MMM dd uuuu", Locale.ENGLISH);
     private static final String BANNER = " _  __ _ _           \n"
             + "| |/ /(_) |__   ___  \n"
             + "| ' / | | '_ \\ / _ \\\n"
@@ -99,6 +104,19 @@ public class Ui {
     public String getMatchingTasksMessage(TaskList matchingTasks) {
         return getNumberedTasksMessage(
                 "Here are the matching tasks in your list:", matchingTasks);
+    }
+
+    /**
+     * Returns tasks scheduled on a particular date.
+     *
+     * @param scheduledTasks tasks scheduled on the date.
+     * @param date date whose schedule is being displayed.
+     * @return dated schedule message.
+     */
+    public String getScheduleMessage(TaskList scheduledTasks, LocalDate date) {
+        return getNumberedTasksMessage(
+                "Here is your schedule for " + date.format(DATE_FORMAT) + ":",
+                scheduledTasks);
     }
 
     /**

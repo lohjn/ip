@@ -36,6 +36,18 @@ public class Deadline extends Task {
     }
 
     /**
+     * Returns whether this deadline is due on the supplied date.
+     *
+     * @param date date whose schedule is being viewed.
+     * @return {@code true} when the deadline is due on the date.
+     */
+    @Override
+    public boolean isScheduledOn(LocalDate date) {
+        assert date != null : "A schedule date must not be null";
+        return by.equals(date);
+    }
+
+    /**
      * Returns this task in the deadline display format.
      *
      * @return task text containing the {@code [D]} type marker and formatted deadline date.

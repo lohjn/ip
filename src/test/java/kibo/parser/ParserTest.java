@@ -1,8 +1,10 @@
 package kibo.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
@@ -55,6 +57,30 @@ public class ParserTest {
         assertEquals("Mon 2pm", event.getFrom());
         assertEquals("4pm", event.getTo());
         assertEquals("[E][ ] project meeting (from: Mon 2pm to: 4pm)", event.toString());
+        assertFalse(event.isScheduledOn(LocalDate.of(2019, 12, 2)));
+    }
+
+    @Test
+    void parseEvent_validDatedStart_returnsScheduledEvent() throws InvalidCommandException {
+        Task task = parser.parseEvent(
+                "event project meeting /from 2019-12-02 2pm /to 4pm");
+
+        Event event = assertInstanceOf(Event.class, task);
+        assertTrue(event.isScheduledOn(LocalDate.of(2019, 12, 2)));
+        assertFalse(event.isScheduledOn(LocalDate.of(2019, 12, 3)));
+        assertEquals("2019-12-02 2pm", event.getFrom());
+        assertEquals("4pm", event.getTo());
+    }
+
+    @Test
+    void parseEvent_invalidDatedStart_throwsInvalidCommandException() {
+        InvalidCommandException exception = assertThrows(
+                InvalidCommandException.class, () -> parser.parseEvent(
+                        "event project meeting /from 2019-02-29 2pm /to 4pm"));
+
+        assertEquals("The event start date must use yyyy-MM-dd format.\n"
+                + "Date-aware event usage: event [description] "
+                + "/from yyyy-MM-dd [time] /to [end]", exception.getMessage());
     }
 
     @Test
@@ -78,6 +104,20 @@ public class ParserTest {
 
         assertEquals("The search keyword cannot be empty.\nUsage: find [keyword]",
                 exception.getMessage());
+    }
+
+    @Test
+    void parseScheduleDate_validDate_returnsLocalDate() throws InvalidCommandException {
+        assertEquals(LocalDate.of(2019, 12, 2),
+                parser.parseScheduleDate("schedule 2019-12-02"));
+    }
+
+    @Test
+    void parseScheduleDate_missingOrInvalidDate_throwsInvalidCommandException() {
+        assertInvalidScheduleDate("schedule");
+        assertInvalidScheduleDate("schedule 2019-02-29");
+        assertInvalidScheduleDate("schedule tomorrow");
+        assertInvalidScheduleDate("schedule 2019-12-02 extra");
     }
 
     @Test
@@ -114,5 +154,17 @@ public class ParserTest {
                 InvalidCommandException.class, () -> parser.parseEvent(input));
         assertEquals("An event needs a description, /from start, and /to end.\n"
                 + "Usage: event [description] /from [start] /to [end]", exception.getMessage());
+    }
+
+    /**
+     * Verifies each malformed schedule command produces the standard usage error.
+     *
+     * @param input malformed schedule command.
+     */
+    private void assertInvalidScheduleDate(String input) {
+        InvalidCommandException exception = assertThrows(
+                InvalidCommandException.class, () -> parser.parseScheduleDate(input));
+        assertEquals("The schedule date must use yyyy-MM-dd format.\n"
+                + "Usage: schedule yyyy-MM-dd", exception.getMessage());
     }
 }

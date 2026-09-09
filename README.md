@@ -38,3 +38,17 @@ java -jar build/libs/kibo.jar
 ```
 
 Kibo reads and writes its task data relative to the directory from which the JAR is run.
+
+## Viewing schedules
+
+Use `schedule yyyy-MM-dd` to view deadlines due on a date and events that start on that date.
+For an event to appear in a schedule, begin its `/from` value with an ISO date:
+
+```text
+event project meeting /from 2019-12-02 2pm /to 4pm
+schedule 2019-12-02
+```
+
+The time text remains flexible. Existing events with free-form starts such as `Mon 2pm` continue
+to load and display normally, but they are excluded from dated schedules because they do not
+identify a calendar date.

@@ -2,6 +2,7 @@ package kibo.parser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
 import kibo.exception.InvalidCommandException;
 import kibo.exception.KiboException;
@@ -20,8 +21,13 @@ public class Parser {
     private static final String EVENT_USAGE =
             "Usage: event [description] /from [start] /to [end]";
     private static final String FIND_USAGE = "Usage: find [keyword]";
+    private static final String SCHEDULE_USAGE = "Usage: schedule yyyy-MM-dd";
+    private static final String DATED_EVENT_USAGE =
+            "Date-aware event usage: event [description] /from yyyy-MM-dd [time] /to [end]";
     private static final String AVAILABLE_COMMANDS =
-            "Available commands: todo, deadline, event, list, find, mark, unmark, delete, bye";
+            "Available commands: todo, deadline, event, list, find, schedule, mark, unmark, delete, bye";
+    private static final Pattern DATE_LIKE_EVENT_PREFIX =
+            Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}");
 
     /**
      * Creates a parser for interpreting Kibo commands.
@@ -114,6 +120,23 @@ public class Parser {
     }
 
     /**
+     * Extracts and validates the date used to view a schedule.
+     *
+     * @param input full schedule command.
+     * @return requested schedule date.
+     * @throws InvalidCommandException if the date is missing or invalid.
+     */
+    public LocalDate parseScheduleDate(String input) throws InvalidCommandException {
+        String dateText = input.substring(CommandType.SCHEDULE.getKeyword().length()).trim();
+        try {
+            return LocalDate.parse(dateText);
+        } catch (DateTimeParseException exception) {
+            throw new InvalidCommandException(
+                    "The schedule date must use yyyy-MM-dd format.\n" + SCHEDULE_USAGE);
+        }
+    }
+
+    /**
      * Creates a to-do task from validated user input.
      *
      * @param input full todo command.
@@ -186,6 +209,27 @@ public class Parser {
                     "An event needs a description, /from start, and /to end.\n"
                     + EVENT_USAGE);
         }
+        validateDatedEventStart(from);
         return new Event(description, from, to);
+    }
+
+    /**
+     * Rejects an invalid ISO-like date at the beginning of an event start.
+     *
+     * @param from event start text.
+     * @throws InvalidCommandException if the first token resembles but is not a valid ISO date.
+     */
+    private static void validateDatedEventStart(String from) throws InvalidCommandException {
+        String dateText = from.split("\\s+", 2)[0];
+        if (!DATE_LIKE_EVENT_PREFIX.matcher(dateText).matches()) {
+            return;
+        }
+
+        try {
+            LocalDate.parse(dateText);
+        } catch (DateTimeParseException exception) {
+            throw new InvalidCommandException(
+                    "The event start date must use yyyy-MM-dd format.\n" + DATED_EVENT_USAGE);
+        }
     }
 }
