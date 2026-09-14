@@ -1,6 +1,7 @@
 package kibo.gui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
@@ -14,9 +15,13 @@ import org.junit.jupiter.api.Test;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import kibo.Kibo;
 
 /**
@@ -62,6 +67,75 @@ public class MainWindowTest {
             assertEquals(5, dialogContainer.getChildren().size());
             assertTrue(userInput.isDisabled());
             assertTrue(sendButton.isDisabled());
+            return null;
+        });
+
+        Platform.runLater(testActions);
+        testActions.get(JAVAFX_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    }
+
+    @Test
+    void handleUserInput_errorsThenSuccess_highlightsOnlyErrors() throws Exception {
+        FutureTask<Void> testActions = new FutureTask<>(() -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainWindow.fxml"));
+            AnchorPane root = loader.load();
+            new Scene(root);
+            MainWindow mainWindow = loader.getController();
+            mainWindow.setKibo(new Kibo());
+            VBox dialogs = (VBox) loader.getNamespace().get("dialogContainer");
+            TextField input = (TextField) loader.getNamespace().get("userInput");
+            Button sendButton = (Button) loader.getNamespace().get("sendButton");
+
+            String[] invalidCommands = {"blah", "todo", "schedule tomorrow", "mark one", ""};
+            for (String command : invalidCommands) {
+                input.setText(command);
+                input.fireEvent(new ActionEvent());
+                root.applyCss();
+
+                Label error = (Label) dialogs.getChildren().getLast().lookup("#dialog");
+                assertTrue(error.getStyleClass().contains("error-label"));
+                assertTrue(error.getText().startsWith("Error\n"));
+                assertEquals(Color.web("#8a1c13"), error.getTextFill());
+                assertEquals(Color.web("#fff1f0"), error.getBackground().getFills().getFirst().getFill());
+                assertFalse(input.isDisabled());
+                assertFalse(sendButton.isDisabled());
+            }
+
+            input.setText("list");
+            input.fireEvent(new ActionEvent());
+            root.applyCss();
+            Label reply = (Label) dialogs.getChildren().getLast().lookup("#dialog");
+            assertFalse(reply.getStyleClass().contains("error-label"));
+            assertTrue(reply.getText().contains("Here are the tasks in your list:"));
+            assertEquals(Color.WHITE, reply.getBackground().getFills().getFirst().getFill());
+            return null;
+        });
+
+        Platform.runLater(testActions);
+        testActions.get(JAVAFX_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    }
+
+    @Test
+    void setKibo_loadingError_highlightsErrorAndDisablesInput() throws Exception {
+        FutureTask<Void> testActions = new FutureTask<>(() -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainWindow.fxml"));
+            loader.load();
+            MainWindow mainWindow = loader.getController();
+            String message = "The saved task on line 1 has an invalid format.";
+            mainWindow.setKibo(new Kibo() {
+                @Override
+                public String getLoadingErrorMessage() {
+                    return message;
+                }
+            });
+
+            VBox dialogs = (VBox) loader.getNamespace().get("dialogContainer");
+            Label error = (Label) dialogs.getChildren().getLast().lookup("#dialog");
+            assertEquals("Error\n" + message, error.getText());
+            assertTrue(error.getStyleClass().contains("error-label"));
+            assertEquals(2, dialogs.getChildren().size());
+            assertTrue(((TextField) loader.getNamespace().get("userInput")).isDisabled());
+            assertTrue(((Button) loader.getNamespace().get("sendButton")).isDisabled());
             return null;
         });
 

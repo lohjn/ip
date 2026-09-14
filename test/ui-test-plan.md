@@ -468,7 +468,7 @@ T | 0 | first task
 ## UI-009: Launch the packaged JavaFX application
 
 Aim: Verify that the Shadow plugin produces an executable fat JAR that opens Kibo's JavaFX
-chat window.
+chat window, highlights command errors, and keeps normal replies visually distinct.
 
 Setup: run `./gradlew shadowJar` from the repository root. Then use a fresh empty temporary
 working directory with no `data/` folder and launch the JAR using its absolute path, for example:
@@ -482,7 +482,10 @@ Manual interaction, in order:
 1. Confirm the window opens with Kibo's welcome message.
 2. Enter `todo first task` and confirm the user and Kibo dialog boxes appear.
 3. Enter `list` and confirm the task is shown.
-4. Enter `bye` and confirm the input field and Send button become disabled.
+4. Enter `todo` and confirm the reply has an `Error` label, pale red background, dark red
+   text, and red border. The explanation and `Usage: todo [description]` must remain visible.
+5. Enter `list` again and confirm its reply uses the normal white bubble with no `Error` label.
+6. Enter `bye` and confirm the input field and Send button become disabled.
 
 ## UI-010: Find tasks by description
 
