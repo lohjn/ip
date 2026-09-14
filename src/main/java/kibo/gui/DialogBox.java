@@ -67,6 +67,18 @@ public class DialogBox extends HBox {
     }
 
     /**
+     * Creates an error reply with a visible label and a distinct bubble style.
+     *
+     * @param text error explanation and any corrective instructions.
+     * @return Kibo error dialog box.
+     */
+    public static DialogBox getErrorDialog(String text) {
+        DialogBox dialogBox = getKiboDialog("Error\n" + text);
+        dialogBox.dialog.getStyleClass().add("error-label");
+        return dialogBox;
+    }
+
+    /**
      * Places Kibo's avatar on the left and applies the reply bubble style.
      */
     private void flip() {

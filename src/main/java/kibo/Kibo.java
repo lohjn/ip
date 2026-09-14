@@ -99,11 +99,21 @@ public class Kibo {
      * @return response to display to the user.
      */
     public String getResponse(String input) {
+        return getCommandResponse(input).getMessage();
+    }
+
+    /**
+     * Processes a command and returns its message together with an explicit error status.
+     *
+     * @param input command entered by the user.
+     * @return command response for interfaces that distinguish errors visually.
+     */
+    public CommandResponse getCommandResponse(String input) {
         try {
             CommandType commandType = parser.parseCommandType(input);
-            return executeCommand(input, commandType);
+            return new CommandResponse(executeCommand(input, commandType), false);
         } catch (KiboException exception) {
-            return ui.getErrorMessage(exception);
+            return new CommandResponse(ui.getErrorMessage(exception), true);
         }
     }
 

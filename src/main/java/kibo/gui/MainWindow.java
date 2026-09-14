@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import kibo.CommandResponse;
 import kibo.Kibo;
 
 /**
@@ -50,7 +51,7 @@ public class MainWindow extends AnchorPane {
 
         String loadingError = kibo.getLoadingErrorMessage();
         if (!loadingError.isEmpty()) {
-            dialogContainer.getChildren().add(DialogBox.getKiboDialog(loadingError));
+            dialogContainer.getChildren().add(DialogBox.getErrorDialog(loadingError));
             disableInput();
         }
     }
@@ -61,11 +62,14 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String userText = userInput.getText();
-        String response = kibo.getResponse(userText.trim());
+        CommandResponse response = kibo.getCommandResponse(userText.trim());
+        DialogBox reply = response.isError()
+                ? DialogBox.getErrorDialog(response.getMessage())
+                : DialogBox.getKiboDialog(response.getMessage());
 
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(userText),
-                DialogBox.getKiboDialog(response));
+                reply);
         userInput.clear();
 
         if (kibo.isExitRequested()) {
