@@ -26,7 +26,7 @@
         </ScrollPane>
         <TextField fx:id="userInput"
                    onAction="#handleUserInput"
-                   promptText="Type a command..."
+                   promptText="What's next? Try 'list'"
                    AnchorPane.bottomAnchor="12.0"
                    AnchorPane.leftAnchor="12.0"
                    AnchorPane.rightAnchor="94.0" />

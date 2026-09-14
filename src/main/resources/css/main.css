@@ -1,6 +1,9 @@
 .root {
-    -fx-background-color: #eef4f7;
-    -fx-font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    -fx-background-color: #fff9ec;
+    -fx-font-family: "System";
+    -fx-font-style: normal;
+    -fx-font-weight: normal;
+    -fx-font-size: 14px;
 }
 
 .scroll-pane,
@@ -18,25 +21,25 @@
 }
 
 .scroll-bar:vertical .thumb {
-    -fx-background-color: #9eb4bf;
+    -fx-background-color: #c5a66e;
     -fx-background-radius: 8px;
 }
 
 .text-field {
     -fx-background-color: white;
     -fx-background-radius: 18px;
-    -fx-border-color: #c8d6dc;
+    -fx-border-color: #c5a66e;
     -fx-border-radius: 18px;
     -fx-font-size: 14px;
     -fx-padding: 9px 14px;
 }
 
 .text-field:focused {
-    -fx-border-color: #297c86;
+    -fx-border-color: #9c440d;
 }
 
 .button {
-    -fx-background-color: #297c86;
+    -fx-background-color: #9c440d;
     -fx-background-radius: 18px;
     -fx-cursor: hand;
     -fx-font-weight: bold;
@@ -45,9 +48,9 @@
 }
 
 .button:hover {
-    -fx-background-color: #20646c;
+    -fx-background-color: #80370b;
 }
 
 .button:pressed {
-    -fx-background-color: #174b52;
+    -fx-background-color: #652b09;
 }

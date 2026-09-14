@@ -1,6 +1,10 @@
 # Kibo
 
-Kibo is a chatbot built as an individual project for CS2103T.
+Kibo is your cheerful pocket cheerleader for everyday tasks. **Small steps, brighter days!**
+It celebrates finished tasks, encourages you when plans change, and keeps your list close at hand.
+Its cream-and-gold chat window pairs friendly replies with clearly labeled red error messages.
+
+Kibo is built as an individual project for CS2103T.
 
 ## Setting up in Intellij
 
@@ -15,9 +19,9 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    In the same dialog, set the **Project language level** field to the `SDK default` option.
 1. After that, locate the `src/main/java/kibo/Kibo.java` file, right-click it, and choose `Run Kibo.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see the following output:
    ```
-   Hello! I'm Kibo.
-   What can I do for you?
-   Bye. Hope to see you again soon!
+   Hey! I'm Kibo, your pocket cheerleader.
+   Small steps, brighter days!
+   Ready? Try 'list' or 'todo read book'.
    ```
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.

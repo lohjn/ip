@@ -86,6 +86,13 @@ public class MainWindowTest {
             TextField input = (TextField) loader.getNamespace().get("userInput");
             Button sendButton = (Button) loader.getNamespace().get("sendButton");
 
+            root.applyCss();
+            Label welcome = (Label) dialogs.getChildren().getFirst().lookup("#dialog");
+            Label avatar = (Label) dialogs.getChildren().getFirst().lookup("#avatar");
+            assertTrue(welcome.getText().contains("your pocket cheerleader"));
+            assertEquals(Color.web("#fff9ec"), root.getBackground().getFills().getFirst().getFill());
+            assertEquals(Color.web("#f8cb55"), avatar.getBackground().getFills().getFirst().getFill());
+
             String[] invalidCommands = {"blah", "todo", "schedule tomorrow", "mark one", ""};
             for (String command : invalidCommands) {
                 input.setText(command);
@@ -106,7 +113,7 @@ public class MainWindowTest {
             root.applyCss();
             Label reply = (Label) dialogs.getChildren().getLast().lookup("#dialog");
             assertFalse(reply.getStyleClass().contains("error-label"));
-            assertTrue(reply.getText().contains("Here are the tasks in your list:"));
+            assertTrue(reply.getText().contains("Here's your lineup. One step at a time!"));
             assertEquals(Color.WHITE, reply.getBackground().getFills().getFirst().getFill());
             return null;
         });

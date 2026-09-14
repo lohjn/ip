@@ -3,10 +3,10 @@
 }
 
 #dialog {
-    -fx-background-color: #d7eef1;
+    -fx-background-color: #ffedb3;
     -fx-background-radius: 16px 16px 4px 16px;
     -fx-padding: 10px 13px;
-    -fx-text-fill: #17343a;
+    -fx-text-fill: #463620;
 }
 
 #dialog.reply-label {
@@ -23,7 +23,7 @@
 }
 
 #avatar {
-    -fx-background-color: #475d66;
+    -fx-background-color: #69553b;
     -fx-background-radius: 23px;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
@@ -31,6 +31,7 @@
 }
 
 #avatar.kibo-avatar {
-    -fx-background-color: #297c86;
+    -fx-background-color: #f8cb55;
     -fx-font-size: 18px;
+    -fx-text-fill: #463620;
 }

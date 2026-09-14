@@ -40,46 +40,47 @@ Expected program output:
 | ' / | | '_ \ / _ \
 | . \ | | |_) | (_) |
 |_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
+Hey! I'm Kibo, your pocket cheerleader.
+Small steps, brighter days!
+Ready? Try 'list' or 'todo read book'.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ On the list! Let's make it happen:
    [T][ ] borrow book
- Now you have 1 tasks in the list.
+ You've got 1 task on your list.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ On the list! Let's make it happen:
    [D][ ] do homework (by: Dec 02 2019)
- Now you have 2 tasks in the list.
+ You've got 2 tasks on your list.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ On the list! Let's make it happen:
    [E][ ] project meeting (from: Mon 2pm to: 4pm)
- Now you have 3 tasks in the list.
+ You've got 3 tasks on your list.
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Woohoo! One more task done:
    [T][X] borrow book
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here's your lineup. One step at a time!
  1.[T][X] borrow book
  2.[D][ ] do homework (by: Dec 02 2019)
  3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
- OK, I've marked this task as not done yet:
+ Back on the list. You've got this!
    [T][ ] borrow book
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here's your lineup. One step at a time!
  1.[T][ ] borrow book
  2.[D][ ] do homework (by: Dec 02 2019)
  3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
- Bye. Hope to see you again soon!
+ Catch you soon! Keep taking those little steps.
 ____________________________________________________________
 ```
 
@@ -111,8 +112,9 @@ Expected program output:
 | ' / | | '_ \ / _ \
 | . \ | | |_) | (_) |
 |_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
+Hey! I'm Kibo, your pocket cheerleader.
+Small steps, brighter days!
+Ready? Try 'list' or 'todo read book'.
 ____________________________________________________________
 ____________________________________________________________
  The description of a todo cannot be empty.
@@ -153,7 +155,7 @@ ____________________________________________________________
  Task 1 does not exist in your list.
 ____________________________________________________________
 ____________________________________________________________
- Bye. Hope to see you again soon!
+ Catch you soon! Keep taking those little steps.
 ____________________________________________________________
 ```
 
@@ -185,45 +187,46 @@ Expected program output:
 | ' / | | '_ \ / _ \
 | . \ | | |_) | (_) |
 |_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
+Hey! I'm Kibo, your pocket cheerleader.
+Small steps, brighter days!
+Ready? Try 'list' or 'todo read book'.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ On the list! Let's make it happen:
    [T][ ] read book
- Now you have 1 tasks in the list.
+ You've got 1 task on your list.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ On the list! Let's make it happen:
    [D][ ] return book (by: Jun 06 2019)
- Now you have 2 tasks in the list.
+ You've got 2 tasks on your list.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ On the list! Let's make it happen:
    [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
- Now you have 3 tasks in the list.
+ You've got 3 tasks on your list.
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Woohoo! One more task done:
    [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Woohoo! One more task done:
    [D][X] return book (by: Jun 06 2019)
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here's your lineup. One step at a time!
  1.[T][X] read book
  2.[D][X] return book (by: Jun 06 2019)
  3.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
- Noted. I've removed this task:
+ All cleared! I've removed this task:
    [D][X] return book (by: Jun 06 2019)
- Now you have 2 tasks in the list.
+ You've got 2 tasks on your list.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here's your lineup. One step at a time!
  1.[T][X] read book
  2.[E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 ____________________________________________________________
@@ -235,7 +238,7 @@ ____________________________________________________________
  Usage: delete [task number]
 ____________________________________________________________
 ____________________________________________________________
- Bye. Hope to see you again soon!
+ Catch you soon! Keep taking those little steps.
 ____________________________________________________________
 ```
 
@@ -261,30 +264,31 @@ Expected program output:
 | ' / | | '_ \ / _ \
 | . \ | | |_) | (_) |
 |_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
+Hey! I'm Kibo, your pocket cheerleader.
+Small steps, brighter days!
+Ready? Try 'list' or 'todo read book'.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ On the list! Let's make it happen:
    [T][ ] read book
- Now you have 1 tasks in the list.
+ You've got 1 task on your list.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ On the list! Let's make it happen:
    [D][ ] return book (by: Dec 01 2019)
- Now you have 2 tasks in the list.
+ You've got 2 tasks on your list.
 ____________________________________________________________
 ____________________________________________________________
- Nice! I've marked this task as done:
+ Woohoo! One more task done:
    [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
- Noted. I've removed this task:
+ All cleared! I've removed this task:
    [D][ ] return book (by: Dec 01 2019)
- Now you have 1 tasks in the list.
+ You've got 1 task on your list.
 ____________________________________________________________
 ____________________________________________________________
- Bye. Hope to see you again soon!
+ Catch you soon! Keep taking those little steps.
 ____________________________________________________________
 ```
 
@@ -322,17 +326,18 @@ Expected program output:
 | ' / | | '_ \ / _ \
 | . \ | | |_) | (_) |
 |_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
+Hey! I'm Kibo, your pocket cheerleader.
+Small steps, brighter days!
+Ready? Try 'list' or 'todo read book'.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here's your lineup. One step at a time!
  1.[T][X] read book
  2.[D][ ] return book (by: Dec 01 2019)
  3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
- Bye. Hope to see you again soon!
+ Catch you soon! Keep taking those little steps.
 ____________________________________________________________
 ```
 
@@ -360,8 +365,9 @@ Expected program output:
 | ' / | | '_ \ / _ \
 | . \ | | |_) | (_) |
 |_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
+Hey! I'm Kibo, your pocket cheerleader.
+Small steps, brighter days!
+Ready? Try 'list' or 'todo read book'.
 ____________________________________________________________
 ____________________________________________________________
  Please enter a command.
@@ -379,10 +385,10 @@ ____________________________________________________________
  Task text cannot contain " | " because it is used to save tasks.
 ____________________________________________________________
 ____________________________________________________________
- Here are the tasks in your list:
+ Here's your lineup. One step at a time!
 ____________________________________________________________
 ____________________________________________________________
- Bye. Hope to see you again soon!
+ Catch you soon! Keep taking those little steps.
 ____________________________________________________________
 ```
 
@@ -406,8 +412,9 @@ Expected program output:
 | ' / | | '_ \ / _ \
 | . \ | | |_) | (_) |
 |_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
+Hey! I'm Kibo, your pocket cheerleader.
+Small steps, brighter days!
+Ready? Try 'list' or 'todo read book'.
 ____________________________________________________________
  The saved task on line 1 has an invalid format.
 ____________________________________________________________
@@ -440,16 +447,17 @@ Expected program output:
 | ' / | | '_ \ / _ \
 | . \ | | |_) | (_) |
 |_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
+Hey! I'm Kibo, your pocket cheerleader.
+Small steps, brighter days!
+Ready? Try 'list' or 'todo read book'.
 ____________________________________________________________
 ____________________________________________________________
- Got it. I've added this task:
+ On the list! Let's make it happen:
    [T][ ] first task
- Now you have 1 tasks in the list.
+ You've got 1 task on your list.
 ____________________________________________________________
 ____________________________________________________________
- Bye. Hope to see you again soon!
+ Catch you soon! Keep taking those little steps.
 ____________________________________________________________
 ```
 
@@ -479,7 +487,8 @@ java -jar /absolute/path/to/ip/build/libs/kibo.jar
 
 Manual interaction, in order:
 
-1. Confirm the window opens with Kibo's welcome message.
+1. Confirm the title reads `Kibo - Small steps, brighter days`, the welcome calls Kibo your
+   pocket cheerleader, and the window uses a cream background with golden avatars and user bubbles.
 2. Enter `todo first task` and confirm the user and Kibo dialog boxes appear.
 3. Enter `list` and confirm the task is shown.
 4. Enter `todo` and confirm the reply has an `Error` label, pale red background, dark red
@@ -518,27 +527,28 @@ Expected program output:
 | ' / | | '_ \ / _ \
 | . \ | | |_) | (_) |
 |_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
+Hey! I'm Kibo, your pocket cheerleader.
+Small steps, brighter days!
+Ready? Try 'list' or 'todo read book'.
 ____________________________________________________________
 ____________________________________________________________
- Here are the matching tasks in your list:
+ Let's see what matches your search:
  1.[T][X] read book
  2.[D][X] return book (by: Jun 06 2019)
 ____________________________________________________________
 ____________________________________________________________
- Here are the matching tasks in your list:
+ Let's see what matches your search:
  1.[E][ ] project meeting (from: 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
- Here are the matching tasks in your list:
+ Let's see what matches your search:
 ____________________________________________________________
 ____________________________________________________________
  The search keyword cannot be empty.
  Usage: find [keyword]
 ____________________________________________________________
 ____________________________________________________________
- Bye. Hope to see you again soon!
+ Catch you soon! Keep taking those little steps.
 ____________________________________________________________
 ```
 
@@ -576,16 +586,17 @@ Expected program output:
 | ' / | | '_ \ / _ \
 | . \ | | |_) | (_) |
 |_|\_\|_|_.__/ \___/
-Hello! I'm Kibo. I am AI.
-What can I do for you?
+Hey! I'm Kibo, your pocket cheerleader.
+Small steps, brighter days!
+Ready? Try 'list' or 'todo read book'.
 ____________________________________________________________
 ____________________________________________________________
- Here is your schedule for Dec 02 2019:
+ Let's plan your day! Schedule for Dec 02 2019:
  1.[E][ ] dated meeting (from: 2019-12-02 2pm to: 4pm)
  2.[D][ ] submit report (by: Dec 02 2019)
 ____________________________________________________________
 ____________________________________________________________
- Here is your schedule for Dec 04 2019:
+ Let's plan your day! Schedule for Dec 04 2019:
 ____________________________________________________________
 ____________________________________________________________
  The schedule date must use yyyy-MM-dd format.
@@ -600,6 +611,6 @@ ____________________________________________________________
  Date-aware event usage: event [description] /from yyyy-MM-dd [time] /to [end]
 ____________________________________________________________
 ____________________________________________________________
- Bye. Hope to see you again soon!
+ Catch you soon! Keep taking those little steps.
 ____________________________________________________________
 ```
