@@ -47,8 +47,9 @@ public class Ui {
      */
     public String getWelcomeMessage() {
         return joinLines(
-                "Hello! I'm Kibo. I am AI.",
-                "What can I do for you?");
+                "Hey! I'm Kibo, your pocket cheerleader.",
+                "Small steps, brighter days!",
+                "Ready? Try 'list' or 'todo read book'.");
     }
 
     /**
@@ -92,7 +93,7 @@ public class Ui {
      * @return task-list message.
      */
     public String getTaskListMessage(TaskList tasks) {
-        return getNumberedTasksMessage("Here are the tasks in your list:", tasks);
+        return getNumberedTasksMessage("Here's your lineup. One step at a time!", tasks);
     }
 
     /**
@@ -103,7 +104,7 @@ public class Ui {
      */
     public String getMatchingTasksMessage(TaskList matchingTasks) {
         return getNumberedTasksMessage(
-                "Here are the matching tasks in your list:", matchingTasks);
+                "Let's see what matches your search:", matchingTasks);
     }
 
     /**
@@ -115,7 +116,7 @@ public class Ui {
      */
     public String getScheduleMessage(TaskList scheduledTasks, LocalDate date) {
         return getNumberedTasksMessage(
-                "Here is your schedule for " + date.format(DATE_FORMAT) + ":",
+                "Let's plan your day! Schedule for " + date.format(DATE_FORMAT) + ":",
                 scheduledTasks);
     }
 
@@ -128,9 +129,9 @@ public class Ui {
      */
     public String getTaskAddedMessage(Task task, int taskCount) {
         return joinLines(
-                "Got it. I've added this task:",
+                "On the list! Let's make it happen:",
                 "  " + task,
-                "Now you have " + taskCount + " tasks in the list.");
+                getTaskCountMessage(taskCount));
     }
 
     /**
@@ -141,7 +142,7 @@ public class Ui {
      */
     public String getTaskMarkedMessage(Task task) {
         return joinLines(
-                "Nice! I've marked this task as done:",
+                "Woohoo! One more task done:",
                 "  " + task);
     }
 
@@ -153,7 +154,7 @@ public class Ui {
      */
     public String getTaskUnmarkedMessage(Task task) {
         return joinLines(
-                "OK, I've marked this task as not done yet:",
+                "Back on the list. You've got this!",
                 "  " + task);
     }
 
@@ -166,9 +167,9 @@ public class Ui {
      */
     public String getTaskDeletedMessage(Task task, int taskCount) {
         return joinLines(
-                "Noted. I've removed this task:",
+                "All cleared! I've removed this task:",
                 "  " + task,
-                "Now you have " + taskCount + " tasks in the list.");
+                getTaskCountMessage(taskCount));
     }
 
     /**
@@ -187,7 +188,17 @@ public class Ui {
      * @return farewell message.
      */
     public String getGoodbyeMessage() {
-        return "Bye. Hope to see you again soon!";
+        return "Catch you soon! Keep taking those little steps.";
+    }
+
+    /**
+     * Returns a friendly task count with the appropriate singular or plural noun.
+     *
+     * @param taskCount number of tasks currently stored.
+     * @return task-count message.
+     */
+    private static String getTaskCountMessage(int taskCount) {
+        return "You've got " + taskCount + (taskCount == 1 ? " task" : " tasks") + " on your list.";
     }
 
     /**

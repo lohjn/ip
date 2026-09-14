@@ -37,7 +37,7 @@ public class Main extends Application {
         MainWindow mainWindow = fxmlLoader.getController();
         mainWindow.setKibo(kibo);
 
-        stage.setTitle("Kibo");
+        stage.setTitle("Kibo - Small steps, brighter days");
         stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
         stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
         stage.setScene(new Scene(mainLayout));
