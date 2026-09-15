@@ -1,5 +1,6 @@
 package kibo.parser;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 import kibo.exception.InvalidCommandException;
+import kibo.exception.KiboException;
 import kibo.task.Deadline;
 import kibo.task.Event;
 import kibo.task.Task;
@@ -20,6 +22,77 @@ import kibo.task.Task;
  */
 public class ParserTest {
     private final Parser parser = new Parser();
+
+    @Test
+    void parseCommandType_allKeywordsAndWhitespace_recognizesWholeCommands() throws Exception {
+        for (CommandType command : CommandType.values()) {
+            if (command != CommandType.UNKNOWN) {
+                assertEquals(command, parser.parseCommandType(command.getKeyword()));
+                assertEquals(command, parser.parseCommandType(command.getKeyword() + "\targument"));
+                assertEquals(CommandType.UNKNOWN, CommandType.fromInput(command.getKeyword() + "suffix"));
+            }
+        }
+    }
+
+    @Test
+    void parseCommandType_emptyUnknownOrDifferentCase_rejectsCommand() {
+        for (String input : new String[]{"", " ", "blah", "TODO read book", "listing"}) {
+            assertThrows(InvalidCommandException.class, () -> parser.parseCommandType(input), input);
+        }
+    }
+
+    @Test
+    void ensureNoArguments_exactAndExtraText_validatesListAndBye() {
+        for (CommandType command : new CommandType[]{CommandType.LIST, CommandType.BYE}) {
+            assertDoesNotThrow(() -> parser.ensureNoArguments(command.getKeyword(), command));
+            assertThrows(InvalidCommandException.class, () ->
+                    parser.ensureNoArguments(command.getKeyword() + " extra", command));
+        }
+    }
+
+    @Test
+    void parseTodo_paddedUnicodeDescription_preservesTextAndTrimsEdges() throws Exception {
+        assertEquals("阅读  book", parser.parseTodo("todo   阅读  book   ").getDescription());
+        assertThrows(InvalidCommandException.class, () -> parser.parseTodo("todo"));
+        assertThrows(InvalidCommandException.class, () -> parser.parseTodo("todo   "));
+    }
+
+    @Test
+    void parseTaskIndex_firstAndLastTask_returnsZeroBasedIndex() throws Exception {
+        for (CommandType command : new CommandType[]{CommandType.MARK, CommandType.UNMARK, CommandType.DELETE}) {
+            assertEquals(0, parser.parseTaskIndex(command.getKeyword() + "  1  ", command, 3));
+            assertEquals(2, parser.parseTaskIndex(command.getKeyword() + " 3", command, 3));
+        }
+    }
+
+    @Test
+    void parseTaskIndex_invalidNumbers_throwsHelpfulException() {
+        for (String number : new String[]{"", "one", "1.5", "1 2", "2147483648"}) {
+            assertThrows(InvalidCommandException.class, () ->
+                    parser.parseTaskIndex("mark " + number, CommandType.MARK, 3), number);
+        }
+        for (String number : new String[]{"0", "-1", "4"}) {
+            KiboException exception = assertThrows(KiboException.class, () ->
+                    parser.parseTaskIndex("delete " + number, CommandType.DELETE, 3));
+            assertEquals("Task " + number + " does not exist in your list.", exception.getMessage());
+        }
+        assertThrows(KiboException.class, () -> parser.parseTaskIndex("unmark 1", CommandType.UNMARK, 0));
+    }
+
+    @Test
+    void parseDates_leapDayAndDateOnlyEvent_acceptsValidDate() throws Exception {
+        LocalDate leapDay = LocalDate.of(2024, 2, 29);
+        assertEquals(leapDay, parser.parseScheduleDate("schedule  2024-02-29  "));
+        assertTrue(parser.parseDeadline("deadline report /by 2024-02-29").isScheduledOn(leapDay));
+        assertTrue(parser.parseEvent("event meeting /from 2024-02-29 /to evening").isScheduledOn(leapDay));
+        assertThrows(InvalidCommandException.class, () ->
+                parser.parseEvent("event meeting /from 2024-2-29 /to evening"));
+    }
+
+    @Test
+    void parseEvent_reversedMarkers_rejectsInput() {
+        assertInvalidEvent("event meeting /to 4pm /from 2pm");
+    }
 
     @Test
     void parseDeadline_validDescriptionAndDate_returnsDeadline() throws InvalidCommandException {

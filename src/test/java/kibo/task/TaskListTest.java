@@ -1,9 +1,13 @@
 package kibo.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -12,6 +16,73 @@ import org.junit.jupiter.api.Test;
  * Tests operations for searching a task list.
  */
 public class TaskListTest {
+
+    @Test
+    void addAndRemove_firstMiddleAndLast_preservesOrder() {
+        TaskList tasks = new TaskList();
+        Task first = new Todo("first");
+        Task middle = new Todo("middle");
+        Task last = new Todo("last");
+        tasks.add(last);
+        tasks.add(0, first);
+        tasks.add(1, middle);
+        assertEquals(3, tasks.size());
+        assertSame(first, tasks.get(0));
+        assertSame(middle, tasks.remove(1));
+        assertSame(last, tasks.get(1));
+        assertSame(last, tasks.remove(1));
+        assertSame(first, tasks.remove(0));
+        assertEquals(0, tasks.size());
+    }
+
+    @Test
+    void constructor_sourceListChanges_doesNotChangeStoredList() {
+        Task task = new Todo("original");
+        ArrayList<Task> source = new ArrayList<>(List.of(task));
+        TaskList tasks = new TaskList(source);
+        source.clear();
+        assertEquals(1, tasks.size());
+        assertSame(task, tasks.get(0));
+    }
+
+    @Test
+    void access_invalidIndices_throwsWithoutChangingList() {
+        TaskList tasks = new TaskList(List.of(new Todo("only")));
+        for (int index : new int[]{-1, 1}) {
+            assertThrows(IndexOutOfBoundsException.class, () -> tasks.get(index));
+            assertThrows(IndexOutOfBoundsException.class, () -> tasks.remove(index));
+        }
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.add(2, new Todo("invalid")));
+        assertEquals(1, tasks.size());
+    }
+
+    @Test
+    void iterator_removalAttempt_isReadOnly() {
+        TaskList tasks = new TaskList(List.of(new Todo("keep")));
+        Iterator<Task> iterator = tasks.iterator();
+        assertSame(tasks.get(0), iterator.next());
+        assertThrows(UnsupportedOperationException.class, iterator::remove);
+        assertFalse(iterator.hasNext());
+        assertEquals(1, tasks.size());
+    }
+
+    @Test
+    void findAndSchedule_resultListChanges_doNotChangeSourceStructure() {
+        Task task = new Deadline("read book", LocalDate.of(2024, 2, 29));
+        TaskList tasks = new TaskList(List.of(task));
+        tasks.find("book").remove(0);
+        tasks.findScheduledOn(LocalDate.of(2024, 2, 29)).add(new Todo("extra"));
+        assertEquals(1, tasks.size());
+        assertSame(task, tasks.get(0));
+    }
+
+    @Test
+    void findAndSchedule_emptyList_returnsEmptyResults() {
+        TaskList tasks = new TaskList();
+        assertEquals(0, tasks.find("book").size());
+        assertEquals(0, tasks.findScheduledOn(LocalDate.of(2024, 2, 29)).size());
+        assertThrows(AssertionError.class, () -> tasks.findScheduledOn(null));
+    }
 
     @Test
     void find_matchingDescriptions_returnsMatchesInOriginalOrder() {

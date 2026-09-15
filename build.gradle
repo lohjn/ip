@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'checkstyle'
+    id 'jacoco'
     id 'com.gradleup.shadow' version '9.5.1'
 }
 
@@ -43,6 +44,15 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    // Storage uses a relative path; keep test fixtures away from users' real tasks.
+    def testWorkspace = layout.buildDirectory.dir('test-work').get().asFile
+    workingDir = testWorkspace
+    systemProperty 'kibo.test.workspace', testWorkspace.absolutePath
+    systemProperty 'junit.jupiter.execution.parallel.enabled', 'false'
+    doFirst {
+        testWorkspace.mkdirs()
+    }
+    finalizedBy jacocoTestReport
 
     testLogging {
         events 'passed', 'skipped', 'failed'
@@ -52,6 +62,18 @@ test {
         showCauses = true
         showStackTraces = true
         showStandardStreams = false
+    }
+}
+
+jacoco {
+    toolVersion = '0.8.14'
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+        xml.required = true
     }
 }
 
