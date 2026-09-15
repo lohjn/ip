@@ -14,6 +14,11 @@
 - Output comparison: exact equality after converting CRLF to LF and ignoring one final newline
 - Expected exit behavior: exit normally after receiving `bye`
 
+JUnit tests are a separate suite: run `./gradlew check` from the repository root. Gradle runs
+them in `build/test-work`, with disposable storage fixtures and sequential execution. This
+does not change the repository-root working directory used by the console cases below.
+See [automated-testing.md](automated-testing.md) for coverage reports and remaining gaps.
+
 ## UI-001: Add and display all task types
 
 Aim: Verify creation, display, marking, and unmarking of all task types, including formatted

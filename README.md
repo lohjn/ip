@@ -56,3 +56,15 @@ schedule 2019-12-02
 The time text remains flexible. Existing events with free-form starts such as `Mon 2pm` continue
 to load and display normally, but they are excluded from dated schedules because they do not
 identify a calendar date.
+
+## Running automated tests
+
+From the project root, run `./gradlew check` (or `gradlew.bat check` on Windows) to run JUnit
+tests and Checkstyle. JUnit results are in `build/reports/tests/test/index.html`; the JaCoCo
+coverage report is generated automatically at `build/reports/jacoco/test/html/index.html`.
+Use `./gradlew test --rerun-tasks` to force a fresh test run.
+
+Run file-based tests through Gradle, including when using IntelliJ's test runner: they use
+`build/test-work` as their working directory so they never replace your real `data/duke.txt`.
+See [the automated testing guide](test/automated-testing.md) for coverage and limitations,
+and [the UI test plan](test/ui-test-plan.md) for acceptance and manual checks.
